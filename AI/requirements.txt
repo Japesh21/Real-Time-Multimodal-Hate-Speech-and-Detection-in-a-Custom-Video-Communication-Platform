@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+torch
+transformers
+numpy
+opencv-python
+pydub
+librosa
+python-multipart

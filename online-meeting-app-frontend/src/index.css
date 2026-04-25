@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+  background-color: #0f0f14;
+  color: #f8fafc;
+}
+
+/* Background */
+.app-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url("/Animated Shape.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.app-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 0;
+}
+
+/* global safety */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.auth-icon {
+  width: 20px !important;
+  height: 20px !important;
+  object-fit: contain;
+}
+

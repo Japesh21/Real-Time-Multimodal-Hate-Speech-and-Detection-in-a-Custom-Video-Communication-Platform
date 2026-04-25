@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+
+# cache
+__pycache__/
+*.pyc
+
+# logs
+*.log
+
+# uploads
+uploads/
+
+# AI models
+*.pt
+*.safetensors
+
+*.ipynb
+*.mp3
