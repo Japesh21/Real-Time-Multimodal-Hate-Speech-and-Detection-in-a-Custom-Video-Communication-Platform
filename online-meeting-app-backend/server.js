@@ -46,8 +46,12 @@ UPLOAD_DIRS.forEach((dir) => {
 
 
 // ===== MONGODB CONNECTION =====
+const mongoURI =
+  process.env.MONGO_URI ||
+  "mongodb://127.0.0.1:27017/ai-meeting";
+
 mongoose
-  .connect("mongodb://127.0.0.1:27017/ai-meeting")
+  .connect(mongoURI)
   .then(async () => {
     console.log("MongoDB connected");
 
