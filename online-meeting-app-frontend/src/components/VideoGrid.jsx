@@ -20,30 +20,58 @@ useEffect(() => {
 
   }
 
-video.srcObject = stream;
+  video.srcObject = stream;
+  console.log(
+  "VIDEO TRACKS:",
+  stream.getVideoTracks().length
+);
 
-video.muted = muted;
+console.log(
+  "AUDIO TRACKS:",
+  stream.getAudioTracks().length
+);
 
-const playVideo = async () => {
+  video.muted = muted;
 
-  try {
+  const playVideo = async () => {
 
-    await video.play();
+    try {
 
-  } catch (err) {
+      await video.play();
+
+    } catch (err) {
+
+      console.log(
+        "VIDEO PLAY ERROR:",
+        err
+      );
+
+    }
+
+  };
+
+  video.onloadedmetadata =
+    playVideo;
+
+  // IMPORTANT FIX
+  stream.onaddtrack = () => {
 
     console.log(
-      "VIDEO PLAY ERROR:",
-      err
+      "TRACK ADDED TO STREAM"
     );
 
-  }
+    playVideo();
 
-};
+  };
 
-video.onloadedmetadata = playVideo;
+  playVideo();
 
-playVideo();
+  return () => {
+
+    stream.onaddtrack =
+      null;
+
+  };
 
 }, [stream, muted]);
   return <video ref={ref} autoPlay playsInline muted={muted} style={style} />;
@@ -414,7 +442,7 @@ export default function VideoGrid({
                   overflow: "hidden",
                   background: "#1e293b",
                 }}>
-                  {stream && stream.getVideoTracks().length > 0 ? (
+                  {stream && cam ? (
 
   <VideoTile
     stream={stream}
