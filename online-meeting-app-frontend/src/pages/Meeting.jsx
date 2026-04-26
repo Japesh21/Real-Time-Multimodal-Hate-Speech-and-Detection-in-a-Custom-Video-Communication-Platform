@@ -25,6 +25,7 @@ export default function Meeting({ user }) {
   const navigate = useNavigate();
 
   const peersRef = useRef({});
+  const iceCandidateQueues = useRef({});
 
   const [remoteStreams, setRemoteStreams] =
     useState([]);
@@ -411,7 +412,7 @@ if (!socket.connected) {
 
         if (socket.id > id)
           return;
-        
+
         if (peersRef.current[id]) {
 
         peersRef.current[id].close();
@@ -681,9 +682,43 @@ const peer =
             offer
           )
         );
+      
+      // ===== FLUSH ICE QUEUE =====
 
-        const answer =
-          await peer.createAnswer();
+const queued =
+  iceCandidateQueues.current[from]
+  || [];
+
+for (const c of queued) {
+
+  try {
+
+    await peer.addIceCandidate(
+      new RTCIceCandidate(c)
+    );
+
+  } catch (e) {
+
+    console.log(
+      "Queued ICE error:",
+      e
+    );
+
+  }
+
+}
+
+iceCandidateQueues.current[from] =
+  [];
+
+console.log(
+  `Flushed ${queued.length} ICE candidates for ${from}`
+);
+
+// ===== CREATE ANSWER =====
+
+const answer =
+  await peer.createAnswer();
 
         await peer.setLocalDescription(
           answer
@@ -713,42 +748,98 @@ const peer =
 
         if (peer) {
 
-          await peer.setRemoteDescription(
-            new RTCSessionDescription(
-              answer
-            )
-          );
+  await peer.setRemoteDescription(
+    new RTCSessionDescription(
+      answer
+    )
+  );
 
-        }
+  // ===== FLUSH ICE QUEUE =====
 
-      };
+  const queued =
+    iceCandidateQueues.current[from]
+    || [];
 
-    const handleIce =
-      ({
-        candidate,
-        from,
-      }) => {
+  for (const c of queued) {
 
-        const peer =
-          peersRef.current[
-            from
-          ];
+    try {
 
-        if (peer.remoteDescription) {
+      await peer.addIceCandidate(
+        new RTCIceCandidate(c)
+      );
 
-          peer
-            .addIceCandidate(
-              new RTCIceCandidate(
-                candidate
-              )
-            )
-            .catch((e) =>
-              console.log("ICE add error:", e)
-            );
+    } catch (e) {
 
-        }
+      console.log(
+        "Queued ICE error:",
+        e
+      );
 
-      };
+    }
+
+  }
+
+  iceCandidateQueues.current[from] =
+    [];
+
+  console.log(
+    `Flushed ${queued.length} ICE candidates for ${from}`
+  );
+
+};
+
+  const handleIce = async ({
+  candidate,
+  from,
+}) => {
+
+  const peer =
+    peersRef.current[from];
+
+  if (!peer) return;
+
+  if (
+    peer.remoteDescription &&
+    peer.remoteDescription.type
+  ) {
+
+    try {
+
+      await peer.addIceCandidate(
+        new RTCIceCandidate(candidate)
+      );
+
+    } catch (e) {
+
+      console.log(
+        "ICE add error:",
+        e
+      );
+
+    }
+
+  } else {
+
+    if (
+      !iceCandidateQueues.current[from]
+    ) {
+
+      iceCandidateQueues.current[from] =
+        [];
+
+    }
+
+    iceCandidateQueues.current[from]
+      .push(candidate);
+
+    console.log(
+      "ICE queued for:",
+      from
+    );
+
+  }
+
+};
 
     const handleUserLeft =
       (socketId) => {
@@ -826,16 +917,13 @@ const peer =
     handleUserLeft
   );
 
-};
+  };
+}
+}, [localStream]);
 
-  // FIX 5: Removed participants from dependency array to prevent duplicate peers
-  }, [
-    localStream,
-  ]);
-
-  /* =========================================
-     🔧 FIXED: MIC TOGGLE — NOW EMITS TO BACKEND
-  ========================================= */
+/* =========================================
+   🔧 FIXED: MIC TOGGLE — NOW EMITS TO BACKEND
+========================================= */
   const handleToggleMic = () => {
     setMicOn((prev) => {
       const newMicOn = !prev;
