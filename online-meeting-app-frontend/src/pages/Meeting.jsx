@@ -29,6 +29,8 @@ export default function Meeting({ user }) {
   const [remoteStreams, setRemoteStreams] =
     useState([]);
 
+  const [messages,setMessages] = useState([]);
+
   const [localStream, setLocalStream] =
     useState(null);
 
@@ -407,6 +409,10 @@ if (!socket.connected) {
         if (id === socket.id)
           return;
 
+        if (peersRef.current[id]) {
+          return;
+        }
+
         const peer =
           createPeer();
 
@@ -536,6 +542,9 @@ if (!socket.connected) {
         offer,
         from,
       }) => {
+        if (peersRef.current[from]) {
+          return;
+        }
 
         const peer =
           createPeer();
@@ -1040,6 +1049,9 @@ if (!socket.connected) {
                   "chat" && (
 
                   <ChatBox
+                    messages={messages}
+                    setMessages={setMessages}
+                    
                     socket={
                       socket
                     }

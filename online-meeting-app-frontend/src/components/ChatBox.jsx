@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function ChatBox({ socket, roomId, user = "You", onAlert }) {
-  const [messages, setMessages] = useState([]);
+export default function ChatBox({ socket, roomId, user = "You", onAlert, messages, setMessages }) {
+  
   const [msgInput, setMsgInput] = useState("");
   const chatRef = useRef(null);
 
