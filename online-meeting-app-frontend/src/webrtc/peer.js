@@ -35,57 +35,36 @@ export async function getUserMediaStream() {
 // ===============================
 export const createPeer = () => {
   const peer = new RTCPeerConnection({
-    iceServers: [
+iceServers: [
 
   {
-    urls: "stun:stun.l.google.com:19302"
+    urls: "stun:stun.relay.metered.ca:80",
   },
 
   {
-    urls: "stun:stun2.l.google.com:19302"
+    urls: "turn:global.relay.metered.ca:80",
+    username: "b626f99fa0e6ba0118aa8463",
+    credential: "pI02kOUIIrQL+Ugf",
   },
 
   {
-    urls: "stun:stun3.l.google.com:19302"
+    urls: "turn:global.relay.metered.ca:80?transport=tcp",
+    username: "b626f99fa0e6ba0118aa8463",
+    credential: "pI02kOUIIrQL+Ugf",
   },
 
   {
-    urls: [
-      "turn:openrelay.metered.ca:80",
-      "turn:openrelay.metered.ca:80?transport=tcp",
-      "turn:openrelay.metered.ca:443",
-      "turn:openrelay.metered.ca:443?transport=tcp",
-    ],
-
-    username: "openrelayproject",
-
-    credential: "openrelayproject",
+    urls: "turn:global.relay.metered.ca:443",
+    username: "b626f99fa0e6ba0118aa8463",
+    credential: "pI02kOUIIrQL+Ugf",
   },
 
   {
-    urls: "turn:relay.metered.ca:80",
-
-    username: "e9d3682263d4e0dd7d8a7f84",
-
-    credential: "uGhqDSMVyBkJEWjL",
+    urls: "turns:global.relay.metered.ca:443?transport=tcp",
+    username: "b626f99fa0e6ba0118aa8463",
+    credential: "pI02kOUIIrQL+Ugf",
   },
 
-  {
-    urls: "turn:relay.metered.ca:443",
-
-    username: "e9d3682263d4e0dd7d8a7f84",
-
-    credential: "uGhqDSMVyBkJEWjL",
-  },
-
-  {
-    urls:
-      "turn:relay.metered.ca:443?transport=tcp",
-
-    username: "e9d3682263d4e0dd7d8a7f84",
-
-    credential: "uGhqDSMVyBkJEWjL",
-  }
 ],
   iceTransportPolicy: "all",
   iceCandidatePoolSize: 10
