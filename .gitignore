@@ -21,7 +21,7 @@ uploads/
 *.ipynb
 *.mp3
 
-!yolov8n.pt
-!yolov8m.pt
+!AI/yolov8n.pt
+!AI/yolov8m.pt
 
 *.safetensors

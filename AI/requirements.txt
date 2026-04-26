@@ -1,9 +1,10 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 fastapi
 uvicorn
-torch
+torch==2.2.2
 transformers
 numpy
-opencv-python-headless
 pydub
 librosa
 python-multipart
