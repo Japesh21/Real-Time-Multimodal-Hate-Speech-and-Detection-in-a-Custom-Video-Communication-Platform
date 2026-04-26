@@ -424,6 +424,43 @@ if (!socket.connected) {
         peersRef.current[id] =
           peer;
 
+        peer.onconnectionstatechange = () => {
+
+  console.log(
+    "Connection State:",
+    peer.connectionState
+  );
+
+  if (
+    peer.connectionState === "failed"
+  ) {
+
+    console.error(
+      "❌ Peer FAILED — attempting ICE restart"
+    );
+
+    if (
+      peer.signalingState === "stable"
+    ) {
+
+      peer.restartIce();
+
+    }
+
+  }
+
+  if (
+    peer.connectionState === "connected"
+  ) {
+
+    console.log(
+      "✅ Peer connected successfully!"
+    );
+
+  }
+
+};
+
         localStream
           .getTracks()
           .forEach((track) => {
@@ -561,6 +598,43 @@ const peer =
         peersRef.current[
           from
         ] = peer;
+
+      peer.onconnectionstatechange = () => {
+
+  console.log(
+    "Connection State:",
+    peer.connectionState
+  );
+
+  if (
+    peer.connectionState === "failed"
+  ) {
+
+    console.error(
+      "❌ Peer FAILED — attempting ICE restart"
+    );
+
+    if (
+      peer.signalingState === "stable"
+    ) {
+
+      peer.restartIce();
+
+    }
+
+  }
+
+  if (
+    peer.connectionState === "connected"
+  ) {
+
+    console.log(
+      "✅ Peer connected successfully!"
+    );
+
+  }
+
+};
 
         localStream
           .getTracks()

@@ -67,7 +67,9 @@ iceServers: [
 
 ],
   iceTransportPolicy: "all",
-  iceCandidatePoolSize: 10
+  iceCandidatePoolSize: 10,
+  bundlePolicy: "max-bundle",
+  rtcpMuxPolicy: "require"
 });
 
   // Debug logs (VERY helpful)
