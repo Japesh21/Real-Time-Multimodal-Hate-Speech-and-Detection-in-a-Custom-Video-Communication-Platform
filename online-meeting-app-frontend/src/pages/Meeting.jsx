@@ -714,6 +714,7 @@ iceCandidateQueues.current[from] =
 console.log(
   `Flushed ${queued.length} ICE candidates for ${from}`
 );
+      
 
 // ===== CREATE ANSWER =====
 
@@ -753,7 +754,7 @@ const answer =
       answer
     )
   );
-
+        
   // ===== FLUSH ICE QUEUE =====
 
   const queued =
@@ -785,7 +786,7 @@ const answer =
   console.log(
     `Flushed ${queued.length} ICE candidates for ${from}`
   );
-
+  }
 };
 
   const handleIce = async ({
@@ -918,7 +919,7 @@ const answer =
   );
 
   };
-}
+
 }, [localStream]);
 
 /* =========================================
