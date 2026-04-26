@@ -1,11 +1,11 @@
-
+"""
 import os
 
-import whisper
+#import whisper
 from transformers import pipeline
 
 # load once at import time
-whisper_model = whisper.load_model("base")
+#whisper_model = whisper.load_model("base")
 
 classifier = pipeline(
     "text-classification",
@@ -26,4 +26,12 @@ def analyze_audio(audio_path: str) -> dict:
         "prediction": top["label"],
         "confidence": round(offensive_score, 4),
         "is_harmful": offensive_score > 0.45
+    }
+"""
+def analyze_audio(audio_path: str) -> dict:
+    return {
+        "transcript": "",
+        "prediction": "disabled",
+        "confidence": 0,
+        "is_harmful": False
     }
