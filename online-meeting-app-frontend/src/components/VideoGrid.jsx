@@ -33,6 +33,9 @@ console.log(
 
   video.muted = muted;
 
+  video.playsInline = true;
+  video.setAttribute("playsinline", "");
+
   const playVideo = async () => {
 
     try {

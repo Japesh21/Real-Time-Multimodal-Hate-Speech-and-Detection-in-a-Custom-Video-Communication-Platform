@@ -410,9 +410,6 @@ if (!socket.connected) {
         if (id === socket.id)
           return;
 
-        if (socket.id > id)
-          return;
-
         if (peersRef.current[id]) {
 
         peersRef.current[id].close();
