@@ -2,12 +2,18 @@
 
 fastapi
 uvicorn
+
 torch==2.2.2
-transformers
-numpy
+
+transformers==4.41.2
+
+numpy<2
+
 pydub
 librosa
+
 python-multipart
 httpx
+
 sentencepiece
 safetensors
