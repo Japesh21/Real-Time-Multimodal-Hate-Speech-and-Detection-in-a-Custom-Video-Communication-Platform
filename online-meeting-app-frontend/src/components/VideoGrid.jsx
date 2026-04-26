@@ -24,18 +24,26 @@ video.srcObject = stream;
 
 video.muted = muted;
 
-video.onloadedmetadata = () => {
+const playVideo = async () => {
 
-  video.play().catch((err) => {
+  try {
+
+    await video.play();
+
+  } catch (err) {
 
     console.log(
       "VIDEO PLAY ERROR:",
       err
     );
 
-  });
+  }
 
 };
+
+video.onloadedmetadata = playVideo;
+
+playVideo();
 
 }, [stream, muted]);
   return <video ref={ref} autoPlay playsInline muted={muted} style={style} />;
@@ -406,11 +414,22 @@ export default function VideoGrid({
                   overflow: "hidden",
                   background: "#1e293b",
                 }}>
-                  {stream ? (
-                    <VideoTile stream={stream} muted={false} style={videoStyle} />
-                  ) : (
-                    <CamOffAvatar name={name} photoURL={profileImage} />
-                  )}
+                  {stream && stream.getVideoTracks().length > 0 ? (
+
+  <VideoTile
+    stream={stream}
+    muted={false}
+    style={videoStyle}
+  />
+
+) : (
+
+  <CamOffAvatar
+    name={name}
+    photoURL={profileImage}
+  />
+
+)}
                 </div>
 
                 <div style={nameTag}>{name}</div>
