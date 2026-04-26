@@ -596,6 +596,18 @@ const peer =
         peer.ontrack = (e) => {
           console.log("TRACK RECEIVED", from, e.streams);
 
+        console.log(
+          "TRACKS:",
+          e.streams[0]
+          .getTracks()
+          .map(t => ({
+          kind: t.kind,
+          enabled: t.enabled,
+          muted: t.muted,
+          readyState: t.readyState
+    }))
+);
+
           // FIX 4: Use ref instead of stale participants state
           const participantData =
             participantsRef.current.find(
