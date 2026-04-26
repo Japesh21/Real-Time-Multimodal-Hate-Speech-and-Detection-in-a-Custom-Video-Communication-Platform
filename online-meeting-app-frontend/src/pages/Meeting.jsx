@@ -345,9 +345,16 @@ if (!socket.connected) {
 
   socket.connect();
 
-}
+  socket.on("connect", () => {
+    console.log("Socket connected:", socket.id);
+    joinRoom();
+  });
 
-joinRoom();
+} else {
+
+  joinRoom();
+
+}
         
         
       } catch (err) {
@@ -439,72 +446,71 @@ joinRoom();
 
           };
 
-        peer.ontrack =
-          (e) => {
+        peer.ontrack = (e) => {
+          console.log("TRACK RECEIVED", id, e.streams);
 
-            // FIX 3: Use ref instead of stale participants state
-            const participantData =
-              participantsRef.current.find(
-                (p) =>
-                  p.id === id
-              );
-
-            setRemoteStreams(
-              (prev) => {
-
-                const exists =
-                  prev.find(
-                    (x) =>
-                      x.id === id
-                  );
-
-                const remoteData =
-                  {
-
-                    id,
-
-                    stream:
-                      e.streams[0],
-
-                    name:
-                      participantData?.name ||
-                      "Participant",
-
-                    profileImage:
-                      participantData?.profileImage ||
-                      "",
-
-                    cam:
-                      participantData?.camOn ??
-                      true,
-                  };
-
-                if (
-                  exists
-                ) {
-
-                  return prev.map(
-                    (p) =>
-
-                      p.id ===
-                      id
-
-                        ? remoteData
-
-                        : p
-                  );
-
-                }
-
-                return [
-                  ...prev,
-                  remoteData,
-                ];
-
-              }
+          // FIX 3: Use ref instead of stale participants state
+          const participantData =
+            participantsRef.current.find(
+              (p) =>
+                p.id === id
             );
 
-          };
+          setRemoteStreams(
+            (prev) => {
+
+              const exists =
+                prev.find(
+                  (x) =>
+                    x.id === id
+                );
+
+              const remoteData =
+                {
+
+                  id,
+
+                  stream:
+                    e.streams[0],
+
+                  name:
+                    participantData?.name ||
+                    "Participant",
+
+                  profileImage:
+                    participantData?.profileImage ||
+                    "",
+
+                  cam:
+                    participantData?.camOn ??
+                    true,
+                };
+
+              if (
+                exists
+              ) {
+
+                return prev.map(
+                  (p) =>
+
+                    p.id ===
+                    id
+
+                      ? remoteData
+
+                      : p
+                );
+
+              }
+
+              return [
+                ...prev,
+                remoteData,
+              ];
+
+            }
+          );
+        };
 
         const offer =
           await peer.createOffer();
@@ -570,74 +576,73 @@ joinRoom();
 
           };
 
-        peer.ontrack =
-          (e) => {
+        peer.ontrack = (e) => {
+          console.log("TRACK RECEIVED", from, e.streams);
 
-            // FIX 4: Use ref instead of stale participants state
-            const participantData =
-              participantsRef.current.find(
-                (p) =>
-                  p.id ===
-                  from
-              );
-
-            setRemoteStreams(
-              (prev) => {
-
-                const exists =
-                  prev.find(
-                    (x) =>
-                      x.id ===
-                      from
-                  );
-
-                const remoteData =
-                  {
-
-                    id: from,
-
-                    stream:
-                      e.streams[0],
-
-                    name:
-                      participantData?.name ||
-                      "Participant",
-
-                    profileImage:
-                      participantData?.profileImage ||
-                      "",
-
-                    cam:
-                      participantData?.camOn ??
-                      true,
-                  };
-
-                if (
-                  exists
-                ) {
-
-                  return prev.map(
-                    (p) =>
-
-                      p.id ===
-                      from
-
-                        ? remoteData
-
-                        : p
-                  );
-
-                }
-
-                return [
-                  ...prev,
-                  remoteData,
-                ];
-
-              }
+          // FIX 4: Use ref instead of stale participants state
+          const participantData =
+            participantsRef.current.find(
+              (p) =>
+                p.id ===
+                from
             );
 
-          };
+          setRemoteStreams(
+            (prev) => {
+
+              const exists =
+                prev.find(
+                  (x) =>
+                    x.id ===
+                    from
+                );
+
+              const remoteData =
+                {
+
+                  id: from,
+
+                  stream:
+                    e.streams[0],
+
+                  name:
+                    participantData?.name ||
+                    "Participant",
+
+                  profileImage:
+                    participantData?.profileImage ||
+                    "",
+
+                  cam:
+                    participantData?.camOn ??
+                    true,
+                };
+
+              if (
+                exists
+              ) {
+
+                return prev.map(
+                  (p) =>
+
+                    p.id ===
+                    from
+
+                      ? remoteData
+
+                      : p
+                );
+
+              }
+
+              return [
+                ...prev,
+                remoteData,
+              ];
+
+            }
+          );
+        };
 
         await peer.setRemoteDescription(
           new RTCSessionDescription(
@@ -697,13 +702,17 @@ joinRoom();
             from
           ];
 
-        if (peer) {
+        if (peer.remoteDescription) {
 
-          peer.addIceCandidate(
-            new RTCIceCandidate(
-              candidate
+          peer
+            .addIceCandidate(
+              new RTCIceCandidate(
+                candidate
+              )
             )
-          );
+            .catch((e) =>
+              console.log("ICE add error:", e)
+            );
 
         }
 
