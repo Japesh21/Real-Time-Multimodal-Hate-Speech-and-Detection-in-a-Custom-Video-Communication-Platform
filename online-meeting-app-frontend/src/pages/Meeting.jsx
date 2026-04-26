@@ -470,8 +470,9 @@ if (!socket.connected) {
 
                   id,
 
-                  stream:
-                    e.streams[0],
+                  stream: new MediaStream(
+                      e.streams[0].getTracks()
+                ),
 
                   name:
                     participantData?.name ||
@@ -602,8 +603,9 @@ if (!socket.connected) {
 
                   id: from,
 
-                  stream:
-                    e.streams[0],
+                  stream: new MediaStream(
+                      e.streams[0].getTracks()
+                  ),
 
                   name:
                     participantData?.name ||

@@ -7,15 +7,41 @@ import { useRef, useState, useEffect, useCallback } from "react";
 ========================================= */
 function VideoTile({ stream, muted = false, style = {} }) {
   const ref = useRef(null);
-  useEffect(() => {
-    const video = ref.current;
-    if (!video) return;
-    if (!stream) { video.srcObject = null; return; }
-    if (video.srcObject !== stream) {
-      video.srcObject = stream;
-      video.play().catch(() => {});
-    }
-  }, [stream]);
+useEffect(() => {
+
+  const video = ref.current;
+
+  if (!video) return;
+
+  if (!stream) {
+
+    video.srcObject = null;
+    return;
+
+  }
+
+  if (video.srcObject !== stream) {
+
+    video.srcObject = stream;
+
+    video.muted = muted;
+
+    video.onloadedmetadata = () => {
+
+      video.play().catch((err) => {
+
+        console.log(
+          "VIDEO PLAY ERROR:",
+          err
+        );
+
+      });
+
+    };
+
+  }
+
+}, [stream, muted]);
   return <video ref={ref} autoPlay playsInline muted={muted} style={style} />;
 }
 
@@ -384,7 +410,7 @@ export default function VideoGrid({
                   overflow: "hidden",
                   background: "#1e293b",
                 }}>
-                  {cam && stream ? (
+                  {stream ? (
                     <VideoTile stream={stream} muted={false} style={videoStyle} />
                   ) : (
                     <CamOffAvatar name={name} photoURL={profileImage} />
