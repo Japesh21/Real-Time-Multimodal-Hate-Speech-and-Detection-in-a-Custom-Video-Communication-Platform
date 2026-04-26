@@ -3,7 +3,10 @@ uvicorn
 torch
 transformers
 numpy
-opencv-python
+opencv-python-headless
 pydub
 librosa
 python-multipart
+httpx
+sentencepiece
+safetensors

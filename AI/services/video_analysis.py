@@ -18,7 +18,7 @@ from services.text_analysis import analyze_text
 from services.cloudinary_service import upload_image
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-HAND_MODEL_PATH = os.path.join(BASE_DIR, "..", "notebooks", "hand_landmarker.task")
+HAND_MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "hand_landmarker.task")
 
 # ✅ Load all models once at startup
 model = YOLO("yolov8n.pt")
@@ -55,7 +55,7 @@ COOLDOWN_SECONDS = 30
 _cooldown_tracker = {}
 
 # ✅ Where flagged frames are saved on disk
-SAVE_DIR = r"C:\Users\japes\OneDrive\Desktop\call\online-meeting-app-backend\uploads\aievents\video"
+SAVE_DIR = "./temp_ai_frames"
 
 # ===== CONSECUTIVE FRAME COUNTER =====
 frame_counter = {}

@@ -21,10 +21,10 @@ hatebert_model.eval()
 
 # ===== 3. Unbiased Toxic RoBERTa — multi-label classification =====
 toxic_tokenizer = AutoTokenizer.from_pretrained(
-    r"C:\Users\japes\OneDrive\Desktop\call\AI\models\toxic-roberta"
+    "unitary/toxic-bert"
 )
 toxic_model = AutoModelForSequenceClassification.from_pretrained(
-    r"C:\Users\japes\OneDrive\Desktop\call\AI\models\toxic-roberta"
+     "unitary/toxic-bert"
 )
 toxic_model.eval()
 

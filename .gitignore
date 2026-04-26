@@ -17,7 +17,11 @@ uploads/
 
 # AI models
 *.pt
-*.safetensors
 
 *.ipynb
 *.mp3
+
+!yolov8n.pt
+!yolov8m.pt
+
+*.safetensors

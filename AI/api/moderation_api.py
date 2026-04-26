@@ -1,5 +1,4 @@
 import os
-os.environ["PATH"] += r";C:\Users\japes\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-8.0.1-full_build\bin"
 
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
@@ -108,7 +107,8 @@ async def moderate_profile_image(req: ProfileImageRequest):
 
     try:
 
-        response = httpx.get(req.image_url)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(req.image_url)
 
         if response.status_code != 200:
 
@@ -188,10 +188,8 @@ async def moderate_audio_live(request: Request):
             "user": user_name,
             "meetingCode": meeting_code,
             "transcript": transcript,
-            "prediction": result["aiLabel"],
+            "prediction": result["prediction"],
             "confidence": result["confidence"],
-            "emotion": result["emotion"],
-            "emotionScore": result["emotion_confidence"],
             "is_harmful": result["is_harmful"],
         }
 
@@ -231,7 +229,7 @@ async def moderate_image(request: Request):
             tmp_path = tmp.name
 
         result = analyze_frame(
-            image_url=tmp_path,
+            image_path=tmp_path,
             meeting_code=meeting_code,
             user_name=user_name,
             user_uid=user_uid,
