@@ -20,26 +20,22 @@ useEffect(() => {
 
   }
 
-  if (video.srcObject !== stream) {
+video.srcObject = stream;
 
-    video.srcObject = stream;
+video.muted = muted;
 
-    video.muted = muted;
+video.onloadedmetadata = () => {
 
-    video.onloadedmetadata = () => {
+  video.play().catch((err) => {
 
-      video.play().catch((err) => {
+    console.log(
+      "VIDEO PLAY ERROR:",
+      err
+    );
 
-        console.log(
-          "VIDEO PLAY ERROR:",
-          err
-        );
+  });
 
-      });
-
-    };
-
-  }
+};
 
 }, [stream, muted]);
   return <video ref={ref} autoPlay playsInline muted={muted} style={style} />;
