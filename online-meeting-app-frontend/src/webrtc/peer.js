@@ -35,27 +35,41 @@ export async function getUserMediaStream() {
 // ===============================
 export const createPeer = () => {
   const peer = new RTCPeerConnection({
-
     iceServers: [
-      // STUN (works for most local testing)
       {
         urls: "stun:stun.l.google.com:19302"
       },
-
-      // Optional: add TURN later for production
-      // {
-      //   urls: "turn:your-turn-server.com",
-      //   username: "user",
-      //   credential: "pass"
-      // }
+      {
+        urls: "stun:stun1.l.google.com:19302"
+      },
+      {
+        urls: "turn:openrelay.metered.ca:80",
+        username: "openrelayproject",
+        credential: "openrelayproject"
+      },
+      {
+        urls: "turn:openrelay.metered.ca:443",
+        username: "openrelayproject",
+        credential: "openrelayproject"
+      },
+      {
+        urls: "turn:openrelay.metered.ca:443?transport=tcp",
+        username: "openrelayproject",
+        credential: "openrelayproject"
+      }
     ],
-
     iceCandidatePoolSize: 10
   });
 
   // Debug logs (VERY helpful)
   peer.onconnectionstatechange = () => {
     console.log("Connection State:", peer.connectionState);
+    if (peer.connectionState === "failed") {
+      console.error("❌ Peer connection FAILED — ICE negotiation broke down");
+    }
+    if (peer.connectionState === "connected") {
+      console.log("✅ Peer connected successfully!");
+    }
   };
 
   peer.oniceconnectionstatechange = () => {
