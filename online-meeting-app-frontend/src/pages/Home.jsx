@@ -5,6 +5,11 @@ import { createMeeting, joinMeeting } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const BASE_URL =
+  import.meta.env.DEV
+    ? "http://localhost:5000"
+    : "https://meeting-backend-v3xj.onrender.com";
+
 export default function Home({ user }) {
 
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ export default function Home({ user }) {
       try {
 
         const res = await axios.get(
-          `http://localhost:5000/api/profile/${user.uid}`
+          `${BASE_URL}/api/profile/${user.uid}`
         );
 
         if (res.data?.user) {

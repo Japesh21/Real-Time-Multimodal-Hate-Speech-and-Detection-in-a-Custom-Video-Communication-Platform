@@ -12,6 +12,11 @@ import { useScreenShare } from "../components/ScreenShare";
 
 import { createPeer, getUserMediaStream } from "../webrtc/peer";
 import socket from "../socket/socket";
+  
+const BASE_URL =
+  import.meta.env.DEV
+    ? "http://localhost:5000"
+    : "https://meeting-backend-v3xj.onrender.com";
 
 export default function Meeting({ user }) {
 
@@ -128,7 +133,7 @@ export default function Meeting({ user }) {
 
     axios
     .get(
-      `http://localhost:5000/api/meeting/${code}`
+      `${BASE_URL}/api/meeting/${code}`
     )
 
     .then((res) => {
@@ -209,7 +214,7 @@ export default function Meeting({ user }) {
 
     axios
       .get(
-        `http://localhost:5000/api/profile/${user.uid}`
+        `${BASE_URL}/api/profile/${user.uid}`
       )
 
       .then((res) => {

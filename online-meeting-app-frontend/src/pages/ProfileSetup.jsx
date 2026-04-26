@@ -4,6 +4,11 @@ import AuthLayout from "../ui/AuthLayout";
 import axios from "axios";
 import { auth } from "../services/firebase";
 
+const BASE_URL =
+  import.meta.env.DEV
+    ? "http://localhost:5000"
+    : "https://meeting-backend-v3xj.onrender.com";
+
 export default function ProfileSetup() {
 
   const navigate = useNavigate();
@@ -73,7 +78,7 @@ export default function ProfileSetup() {
 
       await axios.post(
 
-        "http://localhost:5000/api/profile/setup",
+        `${BASE_URL}/api/profile/setup`,
 
         formData
 
