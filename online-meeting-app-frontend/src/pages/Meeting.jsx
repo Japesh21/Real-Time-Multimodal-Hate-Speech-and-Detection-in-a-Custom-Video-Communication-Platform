@@ -408,10 +408,13 @@ if (!socket.connected) {
 
         if (id === socket.id)
           return;
-
         if (peersRef.current[id]) {
-          return;
-        }
+
+        peersRef.current[id].close();
+
+        delete peersRef.current[id];
+
+}
 
         const peer =
           createPeer();
@@ -542,12 +545,18 @@ if (!socket.connected) {
         offer,
         from,
       }) => {
-        if (peersRef.current[from]) {
-          return;
-        }
+        
 
-        const peer =
-          createPeer();
+      if (peersRef.current[from]) {
+
+      peersRef.current[from].close();
+
+      delete peersRef.current[from];
+
+    }
+
+const peer =
+  createPeer();
 
         peersRef.current[
           from
@@ -1051,7 +1060,7 @@ if (!socket.connected) {
                   <ChatBox
                     messages={messages}
                     setMessages={setMessages}
-                    
+
                     socket={
                       socket
                     }
