@@ -479,9 +479,7 @@ if (!socket.connected) {
 
                   id,
 
-                  stream: new MediaStream(
-                      e.streams[0].getTracks()
-                ),
+                  stream: e.streams[0],
 
                   name:
                     participantData?.name ||
@@ -621,9 +619,7 @@ const peer =
 
                   id: from,
 
-                  stream: new MediaStream(
-                      e.streams[0].getTracks()
-                  ),
+                  stream: e.streams[0],
 
                   name:
                     participantData?.name ||
