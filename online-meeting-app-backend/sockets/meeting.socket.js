@@ -10,7 +10,7 @@ async function moderateTextPython(text, sender, meetingCode) {
 
   try {
 
-    const res = await fetch("http://localhost:8000/moderate/text", {
+    const res = await fetch("https://emmy-vascular-optionally.ngrok-free.dev/moderate/text", {
 
       method: "POST",
 
@@ -60,7 +60,7 @@ async function moderateProfileImage(imageUrl, meetingId, userUid) {
   try {
 
     const res = await fetch(
-      "http://127.0.0.1:8000/moderation/profile-image",
+      "https://emmy-vascular-optionally.ngrok-free.dev/moderation/profile-image",
       {
 
         method: "POST",
