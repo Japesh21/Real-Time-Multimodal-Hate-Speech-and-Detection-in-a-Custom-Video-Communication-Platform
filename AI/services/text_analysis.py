@@ -35,7 +35,6 @@ TOXIC_LABELS = [
     "threat",
     "insult",
     "identity_attack",
-    "sexual_explicit",
 ]
 
 # ===== 4. Bi-LSTM — sequence pattern matching =====

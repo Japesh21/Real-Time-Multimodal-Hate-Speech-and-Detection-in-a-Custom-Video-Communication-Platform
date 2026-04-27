@@ -265,7 +265,86 @@ export default function Meeting({ user }) {
         const media =
           await getUserMediaStream();
 
+        
+
         setLocalStream(media);
+
+/* =========================
+   LIVE AUDIO MODERATION
+========================= */
+
+const audioContext =
+  new AudioContext();
+
+const source =
+  audioContext.createMediaStreamSource(media);
+
+const processor =
+  audioContext.createScriptProcessor(
+    4096,
+    1,
+    1
+  );
+
+source.connect(processor);
+
+processor.connect(
+  audioContext.destination
+);
+
+processor.onaudioprocess =
+  async (event) => {
+
+    if (!aiActiveRef.current)
+      return;
+
+    try {
+
+      const inputData =
+        event.inputBuffer.getChannelData(0);
+
+      const pcmData =
+        new Float32Array(inputData);
+
+      await fetch(
+        "https://emmy-vascular-optionally.ngrok-free.dev/moderation/audio-live",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/octet-stream",
+
+            "X-Meeting-Code":
+              code,
+
+            "X-User-Uid":
+              user.uid,
+
+            "X-User-Name":
+              profileNameRef.current ||
+              user.displayName ||
+              "unknown",
+
+          },
+
+          body: pcmData.buffer,
+
+        }
+      );
+
+    } catch (err) {
+
+      console.log(
+        "Audio moderation error:",
+        err
+      );
+
+    }
+
+  };
 
         const joinRoom = () => {
 
