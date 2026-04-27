@@ -1,5 +1,5 @@
 import os
-
+import time
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
 from services.text_analysis import analyze_text
@@ -16,7 +16,29 @@ import numpy as np
 
 router = APIRouter()
 NODE_URL = "http://localhost:5000"
+# audio buffers per user
+audio_buffers = {}
+def cleanup_old_buffers():
 
+    now = time.time()
+
+    dead = [
+
+        uid
+
+        for uid, buf
+        in audio_buffers.items()
+
+        if now - buf["last_time"] > 60
+    ]
+
+    for uid in dead:
+
+        del audio_buffers[uid]
+
+        print(
+            f"[BUFFER CLEANUP] {uid}"
+        )
 
 class TextRequest(BaseModel):
     text: str
@@ -38,6 +60,14 @@ def pcm_float32_to_wav(raw_bytes: bytes, sample_rate: int = 44100) -> str:
     audio_np = np.nan_to_num(audio_np)
 
     audio_np = np.clip(audio_np, -1.0, 1.0)
+
+    max_val = np.max(np.abs(audio_np))
+
+    if max_val > 0.01:
+
+        audio_np = (
+        audio_np / max_val
+    ) * 0.95
 
     audio_int16 = (audio_np * 32767).astype(np.int16)
 
@@ -151,31 +181,97 @@ async def moderate_audio_live(request: Request):
 
     try:
 
-        meeting_code = request.headers.get("X-Meeting-Code", "0000")
+        meeting_code = request.headers.get(
+            "X-Meeting-Code",
+            "0000"
+        )
 
-        user_uid = request.headers.get("X-User-Uid", "unknown")
+        user_uid = request.headers.get(
+            "X-User-Uid",
+            "unknown"
+        )
 
-        user_name = request.headers.get("X-User-Name", "unknown")
+        user_name = request.headers.get(
+            "X-User-Name",
+            "unknown"
+        )
 
         raw_bytes = await request.body()
 
+        cleanup_old_buffers()
+
+        # reject tiny chunks
         if len(raw_bytes) < 1000:
 
             return {
                 "is_harmful": False,
                 "transcript": "",
-                "message": "audio too short"
+                "message": "too short"
             }
 
-        tmp_path = pcm_float32_to_wav(raw_bytes)
+        # ===== create user buffer =====
+        now = time.time()
 
+        if user_uid not in audio_buffers:
+
+            audio_buffers[user_uid] = {
+                "chunks": [],
+                "last_time": now
+            }
+
+        buf = audio_buffers[user_uid]
+
+        # store chunk
+        buf["chunks"].append(raw_bytes)
+
+        buf["last_time"] = now
+
+        # ===== calculate total size =====
+        total_bytes = sum(
+            len(chunk)
+            for chunk in buf["chunks"]
+        )
+
+        # wait until enough audio collected
+        if total_bytes < 600000:
+
+            return {
+                "is_harmful": False,
+                "transcript": "",
+                "message": "buffering..."
+            }
+
+        # ===== merge chunks =====
+        merged = b"".join(buf["chunks"])
+
+        # clear buffer
+        buf["chunks"] = []
+
+        # make divisible by 4
+        merged = merged[
+            :len(merged)
+            - (len(merged) % 4)
+        ]
+
+        # ===== convert to wav =====
+        tmp_path = pcm_float32_to_wav(
+            merged
+        )
+
+        # ===== analyze =====
         result = analyze_audio(tmp_path)
 
         os.unlink(tmp_path)
 
-        transcript = result["transcript"].strip()
+        transcript = (
+            result["transcript"]
+            .strip()
+        )
 
-        if not transcript or len(transcript) < 3:
+        if (
+            not transcript
+            or len(transcript) < 3
+        ):
 
             return {
                 "is_harmful": False,
@@ -183,7 +279,11 @@ async def moderate_audio_live(request: Request):
                 "message": "no speech"
             }
 
-        print(f"[AUDIO] {user_name} → {transcript}")
+        print(
+            f"[AUDIO] "
+            f"{user_name} "
+            f"→ {transcript}"
+        )
 
         return {
             "type": "audio",
@@ -193,19 +293,23 @@ async def moderate_audio_live(request: Request):
             "prediction": result["prediction"],
             "confidence": result["confidence"],
             "is_harmful": result["is_harmful"],
+            "active_labels": result.get("active_labels", []),
         }
 
     except Exception as e:
 
-        print("Audio error:", e)
+        import traceback
+
+        traceback.print_exc()
 
         return {
+
             "is_harmful": False,
+
             "transcript": "",
+
             "message": str(e)
         }
-
-
 
 # ===== VIDEO / IMAGE MODERATION =====
 @router.post("/moderation/image")
