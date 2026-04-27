@@ -3,9 +3,10 @@ import os
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
 from services.text_analysis import analyze_text
-#from services.audio_analysis import analyze_audio
-# from services.image_analysis import analyze_frame
-# from services.video_analysis import analyze_video
+from services.audio_analysis import analyze_audio
+from services.video_analysis import analyze_frame
+from services.image_analysis import analyze_profile_image
+#from services.video_analysis import analyze_video
 
 
 import tempfile
@@ -101,7 +102,7 @@ def moderate_text(req: TextRequest):
         "votes": result.get("votes", 0),
     }
 
-"""
+
 # ===== PROFILE IMAGE MODERATION =====
 @router.post("/moderation/profile-image")
 async def moderate_profile_image(req: ProfileImageRequest):
@@ -142,8 +143,8 @@ async def moderate_profile_image(req: ProfileImageRequest):
             "safe": True,
             "error": str(e)
         }
-"""
-"""
+
+
 # ===== AUDIO MODERATION =====
 @router.post("/moderation/audio-live")
 async def moderate_audio_live(request: Request):
@@ -203,9 +204,9 @@ async def moderate_audio_live(request: Request):
             "transcript": "",
             "message": str(e)
         }
-"""
 
-"""
+
+
 # ===== VIDEO / IMAGE MODERATION =====
 @router.post("/moderation/image")
 async def moderate_image(request: Request):
@@ -259,4 +260,3 @@ async def moderate_image(request: Request):
             "label": "",
             "message": str(e)
         }
-"""
