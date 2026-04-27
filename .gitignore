@@ -25,3 +25,5 @@ uploads/
 !AI/yolov8m.pt
 
 *.safetensors
+
+ngrok.exe
