@@ -460,11 +460,11 @@ async def moderate_image(request: Request):
                             "meetingCode":
                                 meeting_code,
 
-                                "uid":
-                                    user_uid,
+                            "uid":
+                                user_uid,
 
-                                "name":
-                                    user_name,
+                            "name":
+                                user_name,
 
                             
 
