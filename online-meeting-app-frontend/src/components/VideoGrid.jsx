@@ -197,6 +197,7 @@ export default function VideoGrid({
 
   const AI_URL =
   import.meta.env.VITE_AI_URL;
+  console.log("[AI URL]",AI_URL);
   const stripRef = useRef(null);
   const [canScrollLeft,  setCanScrollLeft]  = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -254,6 +255,15 @@ useEffect(() => {
     );
 
   }
+
+  console.log(
+  "[VIDEO EFFECT]",
+  {
+    aiActive,
+    hasMainStream:
+      !!mainStream
+  }
+);
 
   if (
     !aiActive ||
