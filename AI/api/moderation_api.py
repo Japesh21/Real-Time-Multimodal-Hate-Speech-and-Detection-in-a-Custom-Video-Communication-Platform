@@ -92,7 +92,7 @@ def pcm_float32_to_wav(raw_bytes: bytes, sample_rate: int = 44100) -> str:
 
 # ===== TEXT MODERATION =====
 @router.post("/moderate/text")
-def moderate_text(req: TextRequest):
+async def moderate_text(req: TextRequest):
 
     result = analyze_text(req.text)
 
@@ -117,6 +117,50 @@ def moderate_text(req: TextRequest):
             prediction = label
 
             break
+     # ===== SAVE TEXT EVENT =====
+
+    try:
+
+        async with httpx.AsyncClient() as client:
+                
+                await client.post(
+
+                    f"{NODE_URL}/api/moderation/save-transcript",
+
+                    json={
+
+                        "meetingCode":
+                            req.meetingCode,
+
+                        "uid":
+                            "text-user",
+
+                        "name":
+                            req.user,
+
+                        "transcript":
+                            req.text,
+
+                        "flagged":
+                            result["is_harmful"],
+
+                        "aiLabel":
+                            prediction,
+
+                        "aiScore":
+                            result["confidence"],
+
+                    },
+
+                    timeout=10.0,
+                )
+
+    except Exception as e:
+
+        print(
+            "[TEXT SAVE ERROR]",
+            e
+        )
 
     return {
         "user": req.user,
@@ -289,6 +333,52 @@ async def moderate_audio_live(request: Request):
             f"→ {transcript}"
         )
 
+        # ===== SAVE AUDIO EVENT =====
+
+        try:
+
+            async with httpx.AsyncClient() as client:
+
+                await client.post(
+
+                    f"{NODE_URL}/api/moderation/save-transcript",
+
+                    json={
+
+                        "meetingCode":
+                            meeting_code,
+
+                        "uid":
+                            user_uid,
+
+                        "name":
+                            user_name,
+
+                        "transcript":
+                            transcript,
+
+                        "flagged":
+                            result["is_harmful"],
+
+                        "aiLabel":
+                            result["prediction"],
+
+                        "aiScore":
+                            result["confidence"],
+
+                    },
+
+                    timeout=10.0,
+                )
+
+        except Exception as save_err:
+
+            print(
+                "[AUDIO SAVE ERROR]",
+                save_err
+            )
+
+
         return {
             "type": "audio",
             "user": user_name,
@@ -349,6 +439,100 @@ async def moderate_image(request: Request):
         os.unlink(tmp_path)
 
         print(f"[VIDEO] {user_name}: harmful={result['is_harmful']}")
+
+# ===== SAVE VIDEO EVENT =====
+
+        if result["is_harmful"]:
+
+            try:
+
+                async with httpx.AsyncClient() as client:
+
+                    await client.post(
+
+                        f"{NODE_URL}/api/moderation/save-video-event",
+
+                        json={
+
+                            "meetingCode":
+                                meeting_code,
+
+                            "user": {
+
+                                "uid":
+                                    user_uid,
+
+                                "name":
+                                    user_name,
+
+                            },
+
+                            "type":
+                                result.get(
+                                    "label",
+                                    "nsfw"
+                                ),
+
+                            "label":
+                                result.get(
+                                    "label",
+                                    ""
+                                ),
+
+                            "confidence":
+                                result.get(
+                                    "confidence",
+                                    0
+                                ),
+
+                            "allDetections":
+                                result.get(
+                                    "allDetections",
+                                    []
+                                ),
+
+                            "reasons":
+                                result.get(
+                                    "reasons",
+                                    []
+                                ),
+
+                            "ocrText":
+                                result.get(
+                                    "ocrText",
+                                    ""
+                                ),
+
+                            "ocrHarmful":
+                                result.get(
+                                    "ocrHarmful",
+                                    False
+                                ),
+
+                            "middleFinger":
+                                result.get(
+                                    "middleFinger",
+                                    False
+                                ),
+
+                            "nsfw":
+                                result.get(
+                                    "nsfw",
+                                    False
+                                ),
+
+                        },
+
+                        timeout=10.0,
+                    )
+
+            except Exception as save_err:
+
+                print(
+                    "[VIDEO SAVE ERROR]",
+                    save_err
+                )
+
 
         return {
             "type": "video",

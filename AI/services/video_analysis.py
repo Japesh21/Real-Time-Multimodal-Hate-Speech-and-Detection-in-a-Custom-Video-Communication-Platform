@@ -47,7 +47,7 @@ HARMFUL_NUDE_LABELS = [
 # ✅ REDUCED confidence thresholds
 YOLO_CONFIDENCE       = 0.35   # was 0.4
 NUDE_CONFIDENCE       = 0.35   # was 0.4
-NSFW_CONFIDENCE       = 0.55   # was 0.7
+NSFW_CONFIDENCE       = 0.80   # was 0.7
 MIDDLE_CONFIRM_FRAMES = 2      # was 3 — flags faster
 
 # ✅ Cooldown — save same detection max once per 30 seconds per user
@@ -59,6 +59,7 @@ SAVE_DIR = "./temp_ai_frames"
 
 # ===== CONSECUTIVE FRAME COUNTER =====
 frame_counter = {}
+ocr_frame_counter = {}
 
 def should_flag(key: str) -> bool:
     frame_counter[key] = frame_counter.get(key, 0) + 1
@@ -81,14 +82,32 @@ def detect_middle_finger(image_path: str) -> dict:
             lm = hand
             middle_tip = lm[12].y
             middle_pip = lm[10].y
-            index_tip  = lm[8].y
-            ring_tip   = lm[16].y
-            pinky_tip  = lm[20].y
 
-            middle_up  = middle_tip < middle_pip
-            index_down = index_tip  > middle_pip
-            ring_down  = ring_tip   > middle_pip
-            pinky_down = pinky_tip  > middle_pip
+            index_tip  = lm[8].y
+            index_pip  = lm[6].y
+
+            ring_tip   = lm[16].y
+            ring_pip   = lm[14].y
+
+            pinky_tip  = lm[20].y
+            pinky_pip  = lm[18].y
+
+
+            middle_up  = (
+             middle_tip < middle_pip
+            )
+
+            index_down = (
+            index_tip > index_pip
+            )
+
+            ring_down = (
+            ring_tip > ring_pip
+            )
+
+            pinky_down = (
+            pinky_tip > pinky_pip
+            )
 
             if middle_up and index_down and ring_down and pinky_down:
                 confirmed = should_flag("middle_finger")
@@ -186,13 +205,61 @@ def analyze_frame(
             results["reasons"].append("gesture:middle_finger")
 
         # ===== 5. OCR — text in frame =====
-        ocr = extract_and_check_text(image_path)
-        results["ocr_text"]    = ocr["ocr_text"]
-        results["ocr_harmful"] = ocr["ocr_harmful"]
-        results["ocr_label"]   = ocr["ocr_label"]
-        results["ocr_score"]   = ocr["ocr_score"]
+
+        ocr_frame_counter[user_uid] = (
+            ocr_frame_counter.get(
+                user_uid,
+                0
+            ) + 1
+        )
+
+        run_ocr = (
+            ocr_frame_counter[user_uid]
+            % 5 == 0
+        )
+
+        if run_ocr:
+
+            ocr = extract_and_check_text(
+                image_path
+            )
+
+        else:
+
+            ocr = {
+
+                "ocr_text": "",
+
+                "ocr_harmful": False,
+
+                "ocr_label": "",
+
+                "ocr_score": 0
+
+            }
+
+        results["ocr_text"] = (
+            ocr["ocr_text"]
+        )
+
+        results["ocr_harmful"] = (
+            ocr["ocr_harmful"]
+        )
+
+        results["ocr_label"] = (
+            ocr["ocr_label"]
+        )
+
+        results["ocr_score"] = (
+            ocr["ocr_score"]
+        )
+
         if ocr["ocr_harmful"]:
-            results["reasons"].append(f"ocr_text:{ocr['ocr_text'][:50]}")
+
+            results["reasons"].append(
+                f"ocr_text:"
+                f"{ocr['ocr_text'][:50]}"
+            )
 
         # ===== Is harmful? =====
         results["is_harmful"] = len(results["reasons"]) > 0
@@ -244,9 +311,18 @@ def analyze_frame(
                 print(f"[VIDEO] ⚠️  {user_name} in {meeting_code}: '{results['label']}' ({results['confidence']}) → saved: {filename}")
                 print(f"[VIDEO] Reasons: {results['reasons']}")
             else:
-                secs_left = int(COOLDOWN_SECONDS - (now - last_logged))
-                print(f"[VIDEO] Cooldown {cooldown_key} — {secs_left}s left, skipping save")
-                results["is_harmful"] = False
+                secs_left = int(
+                COOLDOWN_SECONDS -
+                    (now - last_logged)
+                )
+
+                print(
+                f"[VIDEO] Cooldown "
+                f"{cooldown_key}"
+                f" — {secs_left}s left,"
+                f" skipping SAVE only"
+                )
+                
                 results["snapshot_path"] = ""
 
     except Exception as e:
