@@ -22,7 +22,7 @@ whisper_model = WhisperModel(
 # ===== SILENCE DETECTION =====
 def is_silent(
     audio_path: str,
-    rms_threshold: float = 20.0
+    rms_threshold: float = 0.5
 ) -> tuple[bool, float]:
 
     with wave.open(audio_path, "rb") as wf:
@@ -208,7 +208,7 @@ def analyze_audio(
         # ===== CHECK SILENCE =====
         silent, rms = is_silent(
             audio_path,
-            rms_threshold=20.0
+            rms_threshold=0.5
         )
 
         if silent:

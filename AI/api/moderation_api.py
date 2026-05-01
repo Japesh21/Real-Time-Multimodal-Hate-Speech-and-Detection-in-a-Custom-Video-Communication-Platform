@@ -63,7 +63,7 @@ def pcm_float32_to_wav(raw_bytes: bytes, sample_rate: int = 44100) -> str:
 
     max_val = np.max(np.abs(audio_np))
 
-    if max_val > 0.01:
+    if max_val > 0.0001:
 
         audio_np = (
         audio_np / max_val
