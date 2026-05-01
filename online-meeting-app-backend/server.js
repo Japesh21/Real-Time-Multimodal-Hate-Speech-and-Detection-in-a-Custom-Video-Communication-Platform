@@ -154,7 +154,7 @@ app.post("/api/moderation/save-video-event", async (req, res) => {
       ocrHarmful,
       middleFinger,
       nsfw,
-      snapshotBase64,
+      snapshotCloudURL,
     } = req.body;
 
     let type = "weapon";
@@ -169,46 +169,12 @@ app.post("/api/moderation/save-video-event", async (req, res) => {
     // ===== SAVE SNAPSHOT IF PROVIDED =====
     // ===== SAVE SNAPSHOT IF PROVIDED =====
 let snapshotPath = "";
-let snapshotCloudURL = "";
 
-if (snapshotBase64) {
-
-  const base64Data = snapshotBase64.replace(
-    /^data:image\/jpeg;base64,/,
-    ""
-  );
-
-  const filename = `${meetingCode}_${type}_${Date.now()}.jpg`;
-
-  // ===== LOCAL SAVE =====
-
-  snapshotPath = path.join(
-    __dirname,
-    "uploads",
-    "aievents",
-    "video",
-    filename
-  );
-
-  fs.writeFileSync(
-    snapshotPath,
-    Buffer.from(base64Data, "base64")
-  );
-
-  // ===== CLOUDINARY SAVE =====
-
-  const result = await cloudinary.uploader.upload(
-    `data:image/jpeg;base64,${base64Data}`,
-    {
-      folder: "aievents/video",
-    }
-  );
-
-  snapshotCloudURL = result.secure_url;
-}
+const finalSnapshotCloudURL =
+  snapshotCloudURL || "";
 
 
-    await VideoEvent.create({
+      await VideoEvent.create({
       meetingCode,
       user: { uid, name },
       type,
@@ -221,7 +187,7 @@ if (snapshotBase64) {
       middleFinger: middleFinger || false,
       nsfw: nsfw || false,
       snapshotPath,
-      snapshotCloudURL,
+      snapshotCloudURL: finalSnapshotCloudURL,
       warningSent: true,
     });
 

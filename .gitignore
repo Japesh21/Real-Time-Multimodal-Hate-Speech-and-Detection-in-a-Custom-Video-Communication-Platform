@@ -26,4 +26,6 @@ uploads/
 
 *.safetensors
 
+temp_ai_frames/
+
 ngrok.exe

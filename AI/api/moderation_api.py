@@ -15,7 +15,7 @@ import wave
 import numpy as np
 
 router = APIRouter()
-NODE_URL = "http://localhost:5000"
+NODE_URL = "https://meeting-backend-v3xj.onrender.com"
 # audio buffers per user
 audio_buffers = {}
 def cleanup_old_buffers():
@@ -133,10 +133,12 @@ async def moderate_text(req: TextRequest):
                             req.meetingCode,
 
                         "uid":
-                            "text-user",
+                                "text-user",
 
-                        "name":
-                            req.user,
+                            "name":
+                                req.user,
+
+                    
 
                         "transcript":
                             req.text,
@@ -347,12 +349,13 @@ async def moderate_audio_live(request: Request):
 
                         "meetingCode":
                             meeting_code,
-
+                    
                         "uid":
                             user_uid,
 
                         "name":
                             user_name,
+                    
 
                         "transcript":
                             transcript,
@@ -457,15 +460,13 @@ async def moderate_image(request: Request):
                             "meetingCode":
                                 meeting_code,
 
-                            "user": {
-
                                 "uid":
                                     user_uid,
 
                                 "name":
                                     user_name,
 
-                            },
+                            
 
                             "type":
                                     "nsfw"
