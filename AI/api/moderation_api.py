@@ -440,7 +440,7 @@ async def moderate_image(request: Request):
 
         print(f"[VIDEO] {user_name}: harmful={result['is_harmful']}")
 
-# ===== SAVE VIDEO EVENT =====
+        # ===== SAVE VIDEO EVENT =====
 
         if result["is_harmful"]:
 
@@ -468,10 +468,8 @@ async def moderate_image(request: Request):
                             },
 
                             "type":
-                                result.get(
-                                    "label",
                                     "nsfw"
-                                ),
+                                ,
 
                             "label":
                                 result.get(
@@ -487,7 +485,7 @@ async def moderate_image(request: Request):
 
                             "allDetections":
                                 result.get(
-                                    "allDetections",
+                                    "all_detections",
                                     []
                                 ),
 
@@ -499,19 +497,19 @@ async def moderate_image(request: Request):
 
                             "ocrText":
                                 result.get(
-                                    "ocrText",
+                                    "ocr_text",
                                     ""
                                 ),
 
                             "ocrHarmful":
                                 result.get(
-                                    "ocrHarmful",
+                                    "ocr_harmful",
                                     False
                                 ),
 
                             "middleFinger":
                                 result.get(
-                                    "middleFinger",
+                                    "middle_finger",
                                     False
                                 ),
 
@@ -519,6 +517,12 @@ async def moderate_image(request: Request):
                                 result.get(
                                     "nsfw",
                                     False
+                                ),
+
+                            "snapshotCloudURL":
+                                result.get(
+                                    "snapshot_path",
+                                    ""
                                 ),
 
                         },

@@ -304,7 +304,7 @@ def analyze_frame(
                 cloud_url = upload_image(
                 full_path,
                 "video_ai_events"
-                )
+                )   
 
                 results["snapshot_path"] = cloud_url
 

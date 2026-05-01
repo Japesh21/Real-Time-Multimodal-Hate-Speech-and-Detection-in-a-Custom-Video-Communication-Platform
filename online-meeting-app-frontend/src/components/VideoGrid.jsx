@@ -189,6 +189,14 @@ export default function VideoGrid({
 }) {
 
   const [selectedId, setSelectedId] = useState(null);
+  const mainVideoRef =
+  useRef(null);
+
+  const frameIntervalRef =
+  useRef(null);
+
+  const AI_URL =
+  import.meta.env.VITE_AI_URL;
   const stripRef = useRef(null);
   const [canScrollLeft,  setCanScrollLeft]  = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -233,6 +241,156 @@ export default function VideoGrid({
 
   const mainStream = selectedRemote ? selectedRemote.stream : localStream;
   const mainName   = selectedRemote ? selectedRemote.name  : `${localName} (You)`;
+  // ===== VIDEO FRAME MODERATION =====
+
+useEffect(() => {
+
+  if (
+    frameIntervalRef.current
+  ) {
+
+    clearInterval(
+      frameIntervalRef.current
+    );
+
+  }
+
+  if (
+    !aiActive ||
+    !mainStream
+  ) return;
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
+  const ctx =
+    canvas.getContext("2d");
+
+  frameIntervalRef.current =
+    setInterval(async () => {
+
+      const video =
+        mainVideoRef.current;
+
+      if (
+        !video ||
+        video.readyState < 2
+      ) return;
+
+      try {
+
+        canvas.width =
+          video.videoWidth || 640;
+
+        canvas.height =
+          video.videoHeight || 480;
+
+        ctx.drawImage(
+          video,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        );
+
+        const blob =
+          await new Promise(
+            (resolve) =>
+
+              canvas.toBlob(
+                resolve,
+                "image/jpeg",
+                0.7
+              )
+          );
+
+        if (!blob) return;
+
+        const formData =
+          new FormData();
+
+        formData.append(
+          "file",
+          blob,
+          "frame.jpg"
+        );
+
+        const response =
+          await fetch(
+
+            `${AI_URL}/moderation/image`,
+
+            {
+
+              method: "POST",
+
+              headers: {
+
+                "X-Meeting-Code":
+                  meetingCode,
+
+                "X-User-Uid":
+                  user?.uid ||
+                  "unknown",
+
+                "X-User-Name":
+                  localName ||
+                  "unknown",
+
+              },
+
+              body: formData,
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          data.is_harmful
+        ) {
+
+          onAlert(
+
+            `🎥 ${localName}: `
+            + `${data.label}`
+
+          );
+
+        }
+
+      } catch (err) {
+
+        console.log(
+          "Video moderation error:",
+          err
+        );
+
+      }
+
+    }, 5000);
+
+  return () => {
+
+    clearInterval(
+      frameIntervalRef.current
+    );
+    
+    frameIntervalRef.current =
+    null;
+
+  };
+
+}, [
+  aiActive,
+  mainStream,
+  meetingCode,
+  localName,
+  user,
+  onAlert
+]);
 
   /* =========================================
      🔧 FIXED LAYOUT CONSTANTS
@@ -317,16 +475,38 @@ export default function VideoGrid({
     }}
 >
         {mainStream ? (
-          <VideoTile
-            key={selectedRemote ? selectedRemote.id : "local"}
-            stream={mainStream}
-            muted={!selectedRemote}
-            style={{
-              width: "100%", height: "100%",
-              objectFit: "cover", background: "#000", borderRadius: 18,
-            }}
-          />
-        ) : (
+
+  <video
+
+    ref={(el) => {
+
+      mainVideoRef.current = el;
+
+      if (el) {
+
+        el.srcObject =
+          mainStream;
+
+      }
+
+    }}
+
+    autoPlay
+    playsInline
+    muted={!selectedRemote}
+
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      background: "#000",
+      borderRadius: 18,
+    }}
+
+  />
+
+) : (
+
           <div style={{
             width: "100%", height: "100%", background: "#111",
             borderRadius: 18, display: "flex", alignItems: "center",
