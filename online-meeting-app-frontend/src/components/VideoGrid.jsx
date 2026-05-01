@@ -273,6 +273,16 @@ useEffect(() => {
 
       const video =
         mainVideoRef.current;
+      console.log(
+      "[FRAME TICK]",
+    {
+    aiActive,
+    AI_URL,
+    hasVideo: !!video,
+    readyState:
+      video?.readyState
+    }
+  );
 
       if (
         !video ||

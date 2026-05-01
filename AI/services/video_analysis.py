@@ -30,7 +30,7 @@ base_options = python.BaseOptions(model_asset_path=HAND_MODEL_PATH)
 options = vision.HandLandmarkerOptions(
     base_options=base_options,
     num_hands=2,
-    min_hand_detection_confidence=0.5
+    min_hand_detection_confidence=0.3
 )
 hand_landmarker = vision.HandLandmarker.create_from_options(options)
 
@@ -48,7 +48,7 @@ HARMFUL_NUDE_LABELS = [
 YOLO_CONFIDENCE       = 0.35   # was 0.4
 NUDE_CONFIDENCE       = 0.35   # was 0.4
 NSFW_CONFIDENCE       = 0.80   # was 0.7
-MIDDLE_CONFIRM_FRAMES = 2      # was 3 — flags faster
+MIDDLE_CONFIRM_FRAMES = 1     # was 3 — flags faster
 
 # ✅ Cooldown — save same detection max once per 30 seconds per user
 COOLDOWN_SECONDS = 30
@@ -109,6 +109,16 @@ def detect_middle_finger(image_path: str) -> dict:
             pinky_tip > pinky_pip
             )
 
+            print(
+                    "[MIDDLE CHECK]",
+            {
+                "middle_up": middle_up,
+                "index_down": index_down,
+                "ring_down": ring_down,
+                "pinky_down": pinky_down,
+            }
+            )
+
             if middle_up and index_down and ring_down and pinky_down:
                 confirmed = should_flag("middle_finger")
                 return {
@@ -116,6 +126,7 @@ def detect_middle_finger(image_path: str) -> dict:
                     "hands_detected": len(results.hand_landmarks),
                     "confidence": 0.95
                 }
+                
 
         frame_counter["middle_finger"] = 0
         return {"middle_finger": False, "hands_detected": len(results.hand_landmarks)}
