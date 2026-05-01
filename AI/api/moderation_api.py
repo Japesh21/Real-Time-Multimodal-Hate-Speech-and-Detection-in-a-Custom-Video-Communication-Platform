@@ -196,6 +196,10 @@ async def moderate_audio_live(request: Request):
             "unknown"
         )
 
+        sample_rate = int(
+        request.headers.get("X-Sample-Rate", "48000")
+        )
+
         raw_bytes = await request.body()
 
         cleanup_old_buffers()
@@ -255,7 +259,7 @@ async def moderate_audio_live(request: Request):
 
         # ===== convert to wav =====
         tmp_path = pcm_float32_to_wav(
-            merged
+            merged, sample_rate=sample_rate
         )
 
         # ===== analyze =====

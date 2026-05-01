@@ -22,7 +22,7 @@ whisper_model = WhisperModel(
 # ===== SILENCE DETECTION =====
 def is_silent(
     audio_path: str,
-    rms_threshold: float = 50.0
+    rms_threshold: float = 20.0
 ) -> tuple[bool, float]:
 
     with wave.open(audio_path, "rb") as wf:
@@ -117,26 +117,24 @@ def transcribe(
 
             language="en",
 
-            beam_size=5,
-
-            best_of=5,
+            beam_size=3,
 
             temperature=0.0,
 
             # less aggressive silence rejection
-            no_speech_threshold=0.3,
+            no_speech_threshold=0.4,
 
             # accept lower-confidence speech
-            log_prob_threshold=-1.5,
+            log_prob_threshold=-1.0,
 
             # reduce over-filtering
-            compression_ratio_threshold=2.8,
+            compression_ratio_threshold=2.4,
 
             # prevent context carry-over hallucinations
             condition_on_previous_text=False,
 
             # disable VAD because it may cut speech
-            vad_filter=False,
+            vad_filter=True,
         )
     )
 
@@ -210,7 +208,7 @@ def analyze_audio(
         # ===== CHECK SILENCE =====
         silent, rms = is_silent(
             audio_path,
-            rms_threshold=50.0
+            rms_threshold=20.0
         )
 
         if silent:
