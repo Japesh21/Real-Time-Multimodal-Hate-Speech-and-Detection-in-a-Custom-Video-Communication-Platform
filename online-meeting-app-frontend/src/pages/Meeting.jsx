@@ -284,29 +284,93 @@ const processor = audioContext.createScriptProcessor(4096, 1, 1);
 source.connect(processor);
 processor.connect(audioContext.destination);
 
-processor.onaudioprocess = async (event) => {
-  if (!aiActiveRef.current) return;
-  try {
-    const inputData = event.inputBuffer.getChannelData(0);
-    const pcmData = new Float32Array(inputData);
+let lastSent = 0;
 
-    await fetch(
-      "https://emmy-vascular-optionally.ngrok-free.dev/moderation/audio-live",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/octet-stream",
-          "X-Meeting-Code": code,
-          "X-User-Uid": user.uid,
-          "X-User-Name": profileNameRef.current || user.displayName || "unknown",
-          "X-Sample-Rate": String(audioContext.sampleRate), // ✅ sample rate fix
-        },
-        body: pcmData.buffer,
-      }
-    );
+processor.onaudioprocess = async (event) => {
+
+  if (!aiActiveRef.current)
+    return;
+
+  const now = Date.now();
+
+  // only send once every 1.5 sec
+  if (now - lastSent < 1500)
+    return;
+
+  lastSent = now;
+
+  try {
+
+    const inputData =
+      event.inputBuffer.getChannelData(0);
+
+    const pcmData =
+      new Float32Array(inputData);
+
+
+    const response =
+      await fetch(
+
+        "https://emmy-vascular-optionally.ngrok-free.dev/moderation/audio-live",
+
+        {
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/octet-stream",
+
+            "X-Meeting-Code":
+              code,
+
+            "X-User-Uid":
+              user.uid,
+
+            "X-User-Name":
+
+              profileNameRef.current ||
+
+              user.displayName ||
+
+              "unknown",
+
+            "X-Sample-Rate":
+
+              String(
+                audioContext.sampleRate
+              ),
+          },
+
+          body: pcmData.buffer,
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    // show alert if harmful
+    if (data.is_harmful) {
+
+      addAlert(
+
+        `🎤 ${data.user}: ${data.transcript}`
+
+      );
+
+    }
+
   } catch (err) {
-    console.log("Audio moderation error:", err);
+
+    console.log(
+      "Audio moderation error:",
+      err
+    );
+
   }
+
 };
 
         const joinRoom = () => {

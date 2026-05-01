@@ -4,11 +4,7 @@
 export async function getUserMediaStream() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        frameRate: { ideal: 30 }
-      },
+      video: true,
       audio: {
         echoCancellation: true,
         noiseSuppression: true,
@@ -19,14 +15,18 @@ export async function getUserMediaStream() {
     return stream;
 
   } catch (error) {
-    console.error("Media access error:", error);
 
-    alert(
-      "Camera/Microphone access denied or not available.\nPlease allow permissions."
-    );
+  console.error(
+    "MEDIA ACCESS ERROR:",
+    error
+  );
 
-    throw error;
-  }
+  alert(
+    `MEDIA ERROR:\n${error.name}\n\n${error.message}`
+  );
+
+  throw error;
+}
 }
 
 

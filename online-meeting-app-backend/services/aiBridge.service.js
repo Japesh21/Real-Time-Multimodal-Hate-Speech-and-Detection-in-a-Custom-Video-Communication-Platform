@@ -23,13 +23,35 @@ async function moderateText(text, user = "unknown", meetingCode = "0000") {
     };
 
   } catch (error) {
-    console.error("AI moderation error:", error.message);
-    return {
-      label: "unknown",
-      score: 0,
-      is_harmful: false,
-    };
-  }
+
+  console.error(
+    "AI moderation error:"
+  );
+
+  console.error(
+    "MESSAGE:",
+    error.message
+  );
+
+  console.error(
+    "STATUS:",
+    error.response?.status
+  );
+
+  console.error(
+    "DATA:",
+    error.response?.data
+  );
+
+  return {
+
+    label: "unknown",
+
+    score: 0,
+
+    is_harmful: false,
+  };
+}
 }
 
 module.exports = {
