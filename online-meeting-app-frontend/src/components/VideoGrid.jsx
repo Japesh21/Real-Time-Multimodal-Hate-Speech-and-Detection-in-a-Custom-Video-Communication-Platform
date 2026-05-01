@@ -407,9 +407,7 @@ useEffect(() => {
   aiActive,
   mainStream,
   meetingCode,
-  localName,
-  user,
-  onAlert
+  localName
 ]);
 
   /* =========================================
@@ -498,32 +496,52 @@ useEffect(() => {
 
   <video
 
-    ref={(el) => {
+  ref={async (el) => {
 
-      mainVideoRef.current = el;
+    mainVideoRef.current = el;
 
-      if (el) {
+    if (!el) return;
 
-        el.srcObject =
-          mainStream;
+    el.srcObject =
+      mainStream;
 
-      }
+    el.muted =
+      !selectedRemote;
 
-    }}
+    el.playsInline =
+      true;
 
-    autoPlay
-    playsInline
-    muted={!selectedRemote}
+    try {
 
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      background: "#000",
-      borderRadius: 18,
-    }}
+      await el.play();
 
-  />
+      console.log(
+        "[MAIN VIDEO PLAYING]"
+      );
+
+    } catch (err) {
+
+      console.log(
+        "[MAIN VIDEO ERROR]",
+        err
+      );
+
+    }
+
+  }}
+
+  autoPlay
+  playsInline
+
+  style={{
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    background: "#000",
+    borderRadius: 18,
+  }}
+
+/>
 
 ) : (
 
