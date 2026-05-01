@@ -1,3 +1,4 @@
 {
-    "python.defaultInterpreterPath": "C:\\Users\\japes\\Desktop\\call_local\\jape\\Scripts\\python.exe"
+    "python.defaultInterpreterPath": "C:\\Users\\japes\\Desktop\\call_local\\jape\\Scripts\\python.exe",
+    "python.terminal.activateEnvironment": true
 }
