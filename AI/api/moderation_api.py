@@ -6,6 +6,7 @@ from services.text_analysis import analyze_text
 from services.audio_analysis import analyze_audio
 from services.video_analysis import analyze_frame
 from services.image_analysis import analyze_profile_image
+from debug_agent_log import agent_log
 #from services.video_analysis import analyze_video
 
 
@@ -117,52 +118,8 @@ async def moderate_text(req: TextRequest):
             prediction = label
 
             break
-     # ===== SAVE TEXT EVENT =====
 
-    try:
-
-        async with httpx.AsyncClient() as client:
-                
-                await client.post(
-
-                    f"{NODE_URL}/api/moderation/save-transcript",
-
-                    json={
-
-                        "meetingCode":
-                            req.meetingCode,
-
-                        "uid":
-                                "text-user",
-
-                            "name":
-                                req.user,
-
-                    
-
-                        "transcript":
-                            req.text,
-
-                        "flagged":
-                            result["is_harmful"],
-
-                        "aiLabel":
-                            prediction,
-
-                        "aiScore":
-                            result["confidence"],
-
-                    },
-
-                    timeout=10.0,
-                )
-
-    except Exception as e:
-
-        print(
-            "[TEXT SAVE ERROR]",
-            e
-        )
+    # Chat persistence: Node socket saves ChatMessage + AiEvent (not AudioTranscript).
 
     return {
         "user": req.user,
@@ -444,6 +401,17 @@ async def moderate_image(request: Request):
         print(f"[VIDEO] {user_name}: harmful={result['is_harmful']}")
 
         # ===== SAVE VIDEO EVENT =====
+
+        agent_log(
+            "moderation_api.py:moderate_image",
+            "video frame analyzed",
+            {
+                "is_harmful": result["is_harmful"],
+                "has_snapshot": bool(result.get("snapshot_path")),
+                "label": result.get("label", ""),
+            },
+            "H2",
+        )
 
         if result["is_harmful"]:
 

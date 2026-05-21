@@ -3,6 +3,7 @@ const AiEvent = require("../models/AiEvent");
 const Meeting = require("../models/Meeting");
 const User = require("../models/User");
 const Image = require("../models/Images");
+const { agentLog } = require("../debug_agent_log");
 
 
 // ===== TEXT AI =====
@@ -108,6 +109,13 @@ socket.on("join-room", async ({ roomId, user }) => {
       !meeting ||
       !meeting.active
     ) {
+
+      agentLog(
+        "meeting.socket.js:join-room",
+        "socket blocked inactive meeting",
+        { roomId, active: meeting?.active ?? null },
+        "H1"
+      );
 
       socket.emit(
         "meeting-ended"
@@ -454,6 +462,13 @@ socket.on(
         aiScore: aiResult.score || 0,
 
       });
+
+      agentLog(
+        "meeting.socket.js:chat-message",
+        "ChatMessage saved after AI",
+        { roomId, isToxic, label: aiResult.label },
+        "H4"
+      );
 
       if (isToxic) {
 

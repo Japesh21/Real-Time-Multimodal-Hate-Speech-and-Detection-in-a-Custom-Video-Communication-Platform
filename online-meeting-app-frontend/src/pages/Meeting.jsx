@@ -450,6 +450,12 @@ processor.onaudioprocess = async (event) => {
 
           }
         );
+
+        socket.on("meeting-ended", () => {
+          addAlert("This meeting has ended.");
+          navigate("/home");
+        });
+
 if (!socket.connected) {
 
   socket.connect();
@@ -490,6 +496,8 @@ if (!socket.connected) {
       socket.off("participants");
 
       socket.off("ai-warning");
+
+      socket.off("meeting-ended");
 
       setParticipants([]);
 

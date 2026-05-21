@@ -337,6 +337,14 @@ useEffect(() => {
           "frame.jpg"
         );
 
+        const modUid = user?.uid || "unknown";
+        const modName = localName || "unknown";
+        const viewingRemote = !!selectedRemote;
+
+        // #region agent log
+        fetch('http://127.0.0.1:7450/ingest/aaacd22f-394e-4b0b-a706-96fb8d7236b7',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fc1f41'},body:JSON.stringify({sessionId:'fc1f41',location:'VideoGrid.jsx:moderation',message:'frame moderation headers',data:{modUid,modName,viewingRemote,remoteName:selectedRemote?.name||null},hypothesisId:'H5',timestamp:Date.now()})}).catch(()=>{});
+        // #endregion
+
         const response =
           await fetch(
 
@@ -352,12 +360,10 @@ useEffect(() => {
                   meetingCode,
 
                 "X-User-Uid":
-                  user?.uid ||
-                  "unknown",
+                  modUid,
 
                 "X-User-Name":
-                  localName ||
-                  "unknown",
+                  modName,
 
               },
 

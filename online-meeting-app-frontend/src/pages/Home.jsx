@@ -166,6 +166,11 @@ export default function Home({ user }) {
           user.uid
         );
 
+      if (res.data?.active === false) {
+        alert("This meeting has ended.");
+        return;
+      }
+
       navigate(
         `/meeting/${res.data.code}`
       );
@@ -177,9 +182,15 @@ export default function Home({ user }) {
         err
       );
 
-      alert(
-        "Meeting not found"
-      );
+      const status = err.response?.status;
+
+      if (status === 410) {
+        alert("This meeting has ended.");
+      } else if (status === 404) {
+        alert("Meeting not found.");
+      } else {
+        alert("Could not join meeting. Please try again.");
+      }
 
     } finally {
 

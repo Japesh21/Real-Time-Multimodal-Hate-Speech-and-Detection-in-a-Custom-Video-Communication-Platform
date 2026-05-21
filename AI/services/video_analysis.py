@@ -16,6 +16,7 @@ from mediapipe.tasks.python import vision
 import easyocr
 from services.text_analysis import analyze_text
 from services.cloudinary_service import upload_image
+from debug_agent_log import agent_log
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HAND_MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "hand_landmarker.task")
@@ -334,7 +335,19 @@ def analyze_frame(
                 f" — {secs_left}s left,"
                 f" skipping SAVE only"
                 )
-                
+
+                agent_log(
+                    "video_analysis.py:cooldown",
+                    "cooldown branch — is_harmful unchanged",
+                    {
+                        "is_harmful": results["is_harmful"],
+                        "snapshot_path": "",
+                        "label": results["label"],
+                        "secs_left": secs_left,
+                    },
+                    "H2",
+                )
+
                 results["snapshot_path"] = ""
 
     except Exception as e:

@@ -14,6 +14,7 @@ const profileRoutes = require("./routes/profile");
 
 const AudioTranscript = require("./models/AudioTranscript");
 const VideoEvent = require("./models/VideoEvent");
+const { agentLog } = require("./debug_agent_log");
 
 const meetingSocket = require("./sockets/meeting.socket");
 
@@ -121,6 +122,18 @@ app.post("/api/moderation/save-transcript", async (req, res) => {
       emotionScore: emotionScore || 0,
     });
 
+    agentLog(
+      "server.js:save-transcript",
+      "AudioTranscript created",
+      {
+        meetingCode,
+        uid,
+        flagged,
+        transcriptLen: (transcript || "").length,
+      },
+      "H4"
+    );
+
     console.log(
       `[SAVE] Transcript saved for ${name} in room ${meetingCode}`
     );
@@ -191,6 +204,17 @@ const finalSnapshotCloudURL =
       warningSent: true,
     });
 
+    agentLog(
+      "server.js:save-video-event",
+      "VideoEvent created",
+      {
+        meetingCode,
+        uid,
+        label,
+        hasSnapshotURL: !!finalSnapshotCloudURL,
+      },
+      "H2"
+    );
 
     console.log(
       `[SAVE] Video event saved for ${name} in ${meetingCode} — ${label}`

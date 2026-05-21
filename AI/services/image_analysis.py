@@ -1,6 +1,7 @@
 import time
 import requests
 from ultralytics import YOLO
+from debug_agent_log import agent_log
 from transformers import pipeline
 
 # =========================================================
@@ -110,6 +111,13 @@ def analyze_profile_image(
 
             print(
                 f"[PROFILE AI] skipped cached scan for {cache_key}"
+            )
+
+            agent_log(
+                "image_analysis.py:cache",
+                "profile cache hit returns safe:true",
+                {"cache_key": cache_key, "age_sec": int(now - last_scan)},
+                "H3",
             )
 
             return {

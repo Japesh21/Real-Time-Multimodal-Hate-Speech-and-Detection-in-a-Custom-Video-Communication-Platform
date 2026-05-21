@@ -74,13 +74,13 @@ router.post("/join", async (req, res) => {
     }
 
     if (!meeting.active) {
-
-    console.log(
-    "Inactive meeting:",
-    trimmedCode
-  );
-
-}
+      console.log("Inactive meeting:", trimmedCode);
+      return res.status(410).json({
+        message: "This meeting has ended",
+        code: trimmedCode,
+        active: false,
+      });
+    }
 
     // Add participant to DB if uid provided and not already in
     if (uid) {
