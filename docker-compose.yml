@@ -1,0 +1,29 @@
+services:
+  frontend:
+    build: ./online-meeting-app-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./online-meeting-app-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  backend:
+    build: ./online-meeting-app-backend
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: "mongodb+srv://japeshmohan_db_user:Japeshmohan123@cluster0.x7hnlbx.mongodb.net/meetingapp?retryWrites=true&w=majority&appName=Cluster0"
+    volumes:
+      - ./online-meeting-app-backend:/app
+      - /app/node_modules
+    depends_on:
+      - ai
+
+  ai:
+    build: ./AI
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./AI:/app

@@ -29,3 +29,7 @@ uploads/
 temp_ai_frames/
 
 ngrok.exe
+
+online-meeting-app-backend/.env
+online-meeting-app-frontend/.env
+AI/.env
