@@ -1,3 +1,7 @@
+import sys
+if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
+    sys.stdout = open(sys.stdout.fileno(), mode='w', encoding='utf-8', buffering=1)
+
 import torch
 import torch.nn as nn
 import numpy as np
@@ -108,7 +112,7 @@ def tokenize_for_bilstm(text: str) -> torch.Tensor:
 # ===== MODEL INFERENCE FUNCTIONS =====
 
 def run_roberta(text: str) -> dict:
-    results = roberta_classifier(text)[0]
+    results = roberta_classifier(text, truncation=True, max_length=512)[0]
     offensive_score = next(
         (r["score"] for r in results if r["label"] == "offensive"), 0.0
     )
@@ -217,7 +221,7 @@ def analyze_text(text: str) -> dict:
     print(f"[TEXT] '{text[:60]}'")
     print(f"  RoBERTa={roberta['score']}  HateBERT={hatebert['score']}  BiLSTM={bilstm['score']}  ToxicRoBERTa={toxic_result['top_score']}")
     print(f"  Active labels: {toxic_result['active_labels']}")
-    print(f"  Ensemble={ensemble_score}  Votes={votes}/4  → {prediction}")
+    print(f"  Ensemble={ensemble_score}  Votes={votes}/4  -> {prediction}")
 
     return {
         "input": text,

@@ -6,10 +6,13 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import './index.css'
 import App from './App.jsx'
+import { AuthProvider } from './auth/AuthProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
     <Analytics />
     <SpeedInsights />
   </StrictMode>,

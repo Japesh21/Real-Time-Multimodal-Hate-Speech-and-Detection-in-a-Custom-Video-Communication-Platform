@@ -14,6 +14,7 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import easyocr
+from fer.fer import FER
 from services.text_analysis import analyze_text
 from services.cloudinary_service import upload_image
 from debug_agent_log import agent_log
@@ -22,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 HAND_MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "hand_landmarker.task")
 
 # ✅ Load all models once at startup
+emotion_detector = FER(mtcnn=False)
 model = YOLO("yolov8n.pt")
 nude_detector = NudeDetector()
 violence_classifier = pipeline("image-classification", model="Falconsai/nsfw_image_detection")
@@ -49,7 +51,9 @@ HARMFUL_NUDE_LABELS = [
 YOLO_CONFIDENCE       = 0.35   # was 0.4
 NUDE_CONFIDENCE       = 0.35   # was 0.4
 NSFW_CONFIDENCE       = 0.80   # was 0.7
-MIDDLE_CONFIRM_FRAMES = 1     # was 3 — flags faster
+MIDDLE_CONFIRM_FRAMES = 1      # was 3 — flags faster
+EMOTION_CONFIDENCE    = 0.45   # min score to treat angry/disgust as harmful
+HARMFUL_EMOTIONS      = {"angry", "disgust"}
 
 # ✅ Cooldown — save same detection max once per 30 seconds per user
 COOLDOWN_SECONDS = 30
@@ -156,6 +160,47 @@ def extract_and_check_text(image_path: str) -> dict:
         print(f"[OCR ERROR] {e}")
         return {"ocr_text": "", "ocr_harmful": False, "ocr_label": "", "ocr_score": 0}
 
+# ===== FER EMOTION DETECTION =====
+def detect_emotion(image_path: str) -> dict:
+    try:
+        img = cv2.imread(image_path)
+        if img is None:
+            return {"emotion_harmful": False, "emotion": "", "emotion_score": 0}
+
+        # Upscale small frames so FER can detect faces reliably
+        h, w = img.shape[:2]
+        if h < 96 or w < 96:
+            img = cv2.resize(img, (max(w, 96), max(h, 96)))
+
+        result = emotion_detector.detect_emotions(img)
+        if not result:
+            # Fallback: try top_emotion on the whole image
+            top = emotion_detector.top_emotion(img)
+            if top and top[0]:
+                emotion, score = top
+                harmful = emotion in HARMFUL_EMOTIONS and score >= EMOTION_CONFIDENCE
+                return {
+                    "emotion_harmful": harmful,
+                    "emotion": emotion,
+                    "emotion_score": round(score, 4),
+                }
+            return {"emotion_harmful": False, "emotion": "", "emotion_score": 0}
+
+        emotions = result[0]["emotions"]
+        top_emotion = max(emotions, key=emotions.get)
+        top_score = round(emotions[top_emotion], 4)
+        harmful = top_emotion in HARMFUL_EMOTIONS and top_score >= EMOTION_CONFIDENCE
+
+        return {
+            "emotion_harmful": harmful,
+            "emotion": top_emotion,
+            "emotion_score": top_score,
+        }
+    except Exception as e:
+        print(f"[EMOTION ERROR] {e}")
+        return {"emotion_harmful": False, "emotion": "", "emotion_score": 0}
+
+
 # ===== MAIN ANALYSIS FUNCTION =====
 def analyze_frame(
     image_path: str,
@@ -178,6 +223,9 @@ def analyze_frame(
         "ocr_harmful": False,
         "ocr_label": "",
         "ocr_score": 0,
+        "emotion": "",
+        "emotion_score": 0,
+        "emotion_harmful": False,
         "snapshot_path": "",
     }
 
@@ -267,13 +315,21 @@ def analyze_frame(
         )
 
         if ocr["ocr_harmful"]:
-
             results["reasons"].append(
-                f"ocr_text:"
-                f"{ocr['ocr_text'][:50]}"
+                f"ocr_text:{ocr['ocr_text'][:50]}"
             )
 
-        # ===== Is harmful? =====
+        # ===== 6. FER emotion detection =====
+        emo = detect_emotion(image_path)
+        results["emotion"]         = emo["emotion"]
+        results["emotion_score"]   = emo["emotion_score"]
+        results["emotion_harmful"] = emo["emotion_harmful"]
+        if emo["emotion_harmful"]:
+            results["reasons"].append(
+                f"emotion:{emo['emotion']}:{int(emo['emotion_score']*100)}%"
+            )
+
+        # ===== Is harmful? — any single detection triggers alert =====
         results["is_harmful"] = len(results["reasons"]) > 0
 
         # ===== Top label + confidence =====

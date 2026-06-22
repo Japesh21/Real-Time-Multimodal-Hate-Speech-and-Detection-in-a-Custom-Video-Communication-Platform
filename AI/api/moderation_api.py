@@ -1,4 +1,4 @@
-import os
+﻿import os
 import time
 from fastapi import APIRouter, Request
 from pydantic import BaseModel
@@ -53,7 +53,7 @@ class ProfileImageRequest(BaseModel):
     user_uid: str
 
 
-# ===== HELPER — convert raw Float32 PCM → WAV =====
+# ===== HELPER â€” convert raw Float32 PCM â†’ WAV =====
 def pcm_float32_to_wav(raw_bytes: bytes, sample_rate: int = 44100) -> str:
 
     audio_np = np.frombuffer(raw_bytes, dtype=np.float32)
@@ -289,7 +289,7 @@ async def moderate_audio_live(request: Request):
         print(
             f"[AUDIO] "
             f"{user_name} "
-            f"→ {transcript}"
+            f"â†’ {transcript}"
         )
 
         # ===== SAVE AUDIO EVENT =====
@@ -494,6 +494,15 @@ async def moderate_image(request: Request):
                                     ""
                                 ),
 
+                            "emotion":
+                                result.get("emotion", ""),
+
+                            "emotionScore":
+                                result.get("emotion_score", 0),
+
+                            "emotionHarmful":
+                                result.get("emotion_harmful", False),
+
                         },
 
                         timeout=10.0,
@@ -525,3 +534,4 @@ async def moderate_image(request: Request):
             "label": "",
             "message": str(e)
         }
+

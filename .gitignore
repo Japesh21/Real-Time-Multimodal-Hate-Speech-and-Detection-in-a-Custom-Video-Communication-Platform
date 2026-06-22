@@ -8,6 +8,8 @@ build/
 # cache
 __pycache__/
 *.pyc
+*.pyo
+.cache/
 
 # logs
 *.log
@@ -15,21 +17,39 @@ __pycache__/
 # uploads
 uploads/
 
-# AI models
+# AI models (large binary weights)
 *.pt
-
-*.ipynb
-*.mp3
+*.safetensors
+*.bin
+*.onnx
+*.h5
 
 !AI/yolov8n.pt
 !AI/yolov8m.pt
 
-*.safetensors
+# Jupyter
+*.ipynb
 
+# Generated audio samples (large, reproducible via synthesize_audio.py)
+data/audio/
+*.mp3
+
+# FER2013 image dataset — 121MB, 28k images, download separately
+data/fer2013_sample/
+
+# Temp frames from live AI processing
 temp_ai_frames/
 
-ngrok.exe
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
 
+# Environment files
+ngrok.exe
 online-meeting-app-backend/.env
 online-meeting-app-frontend/.env
 AI/.env
+.env

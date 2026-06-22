@@ -14,6 +14,7 @@ const profileRoutes = require("./routes/profile");
 
 const AudioTranscript = require("./models/AudioTranscript");
 const VideoEvent = require("./models/VideoEvent");
+const Meeting = require("./models/Meeting");
 const { agentLog } = require("./debug_agent_log");
 
 const meetingSocket = require("./sockets/meeting.socket");
@@ -93,6 +94,61 @@ app.use("/api/profile", profileRoutes);
 
 
 /* =====================================================
+   FUSION RISK CALCULATOR
+   Runs after every alert save. Counts per-modality alerts
+   for this meeting, computes risk level, updates Meeting doc.
+===================================================== */
+
+async function updateFusionRisk(meetingCode) {
+  try {
+    const [videoEvents, audioTranscripts] = await Promise.all([
+      VideoEvent.find({ meetingCode }),
+      AudioTranscript.find({ meetingCode, flagged: true }),
+    ]);
+
+    const textAlerts    = audioTranscripts.filter(t => t.aiLabel && t.aiLabel !== "non-toxic").length;
+    const audioAlerts   = audioTranscripts.filter(t => t.flagged).length - textAlerts;
+    const videoAlerts   = videoEvents.filter(e => !e.emotionHarmful).length;
+    const emotionAlerts = videoEvents.filter(e => e.emotionHarmful).length;
+    const total         = textAlerts + Math.max(audioAlerts, 0) + videoAlerts + emotionAlerts;
+
+    let riskLevel = "low";
+    if (total === 0)       riskLevel = "low";
+    else if (total <= 2)   riskLevel = "medium";
+    else if (total <= 5)   riskLevel = "high";
+    else                   riskLevel = "critical";
+
+    const parts = [];
+    if (textAlerts)    parts.push(`${textAlerts} text`);
+    if (audioAlerts > 0) parts.push(`${audioAlerts} audio`);
+    if (videoAlerts)   parts.push(`${videoAlerts} video`);
+    if (emotionAlerts) parts.push(`${emotionAlerts} emotion`);
+    const riskSummary = parts.join(" + ") || "no alerts";
+
+    await Meeting.findOneAndUpdate(
+      { code: meetingCode },
+      {
+        $set: {
+          "analytics.fusion.textAlerts":    textAlerts,
+          "analytics.fusion.audioAlerts":   Math.max(audioAlerts, 0),
+          "analytics.fusion.videoAlerts":   videoAlerts,
+          "analytics.fusion.emotionAlerts": emotionAlerts,
+          "analytics.fusion.totalAlerts":   total,
+          "analytics.fusion.riskLevel":     riskLevel,
+          "analytics.fusion.riskSummary":   riskSummary,
+          "analytics.fusion.lastUpdated":   new Date(),
+        },
+      }
+    );
+
+    console.log(`[FUSION] ${meetingCode} → ${riskLevel} (${riskSummary})`);
+  } catch (err) {
+    console.error("[FUSION ERROR]", err.message);
+  }
+}
+
+
+/* =====================================================
    SAVE AUDIO TRANSCRIPT (UPDATED WITH EMOTION SUPPORT)
 ===================================================== */
 
@@ -138,6 +194,8 @@ app.post("/api/moderation/save-transcript", async (req, res) => {
       `[SAVE] Transcript saved for ${name} in room ${meetingCode}`
     );
 
+    if (flagged) updateFusionRisk(meetingCode);
+
     res.json({ message: "Transcript saved" });
 
   } catch (err) {
@@ -168,26 +226,27 @@ app.post("/api/moderation/save-video-event", async (req, res) => {
       middleFinger,
       nsfw,
       snapshotCloudURL,
+      // emotion fields
+      emotion,
+      emotionScore,
+      emotionHarmful,
+      // fusion vote summary (backend/admin view only — not shown to users in-call)
+      fusionVotes,
     } = req.body;
 
     let type = "weapon";
 
-    if (ocrHarmful) type = "ocr";
+    if (emotionHarmful) type = "emotion";
+    else if (ocrHarmful) type = "ocr";
     else if (nsfw) type = "nsfw";
     else if (middleFinger) type = "middle_finger";
     else if (reasons && reasons.some((r) => r.startsWith("nudity:")))
       type = "nudity";
 
+    let snapshotPath = "";
+    const finalSnapshotCloudURL = snapshotCloudURL || "";
 
-    // ===== SAVE SNAPSHOT IF PROVIDED =====
-    // ===== SAVE SNAPSHOT IF PROVIDED =====
-let snapshotPath = "";
-
-const finalSnapshotCloudURL =
-  snapshotCloudURL || "";
-
-
-      await VideoEvent.create({
+    await VideoEvent.create({
       meetingCode,
       user: { uid, name },
       type,
@@ -199,6 +258,10 @@ const finalSnapshotCloudURL =
       ocrHarmful: ocrHarmful || false,
       middleFinger: middleFinger || false,
       nsfw: nsfw || false,
+      emotion: emotion || "",
+      emotionScore: emotionScore || 0,
+      emotionHarmful: emotionHarmful || false,
+      fusionVotes: fusionVotes || "",
       snapshotPath,
       snapshotCloudURL: finalSnapshotCloudURL,
       warningSent: true,
@@ -220,6 +283,7 @@ const finalSnapshotCloudURL =
       `[SAVE] Video event saved for ${name} in ${meetingCode} — ${label}`
     );
 
+    updateFusionRisk(meetingCode);
 
     // ===== REALTIME AI ALERT =====
     io.to(meetingCode).emit("ai-warning", {

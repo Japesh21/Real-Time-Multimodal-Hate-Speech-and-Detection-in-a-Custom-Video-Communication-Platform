@@ -8,7 +8,7 @@ const VideoEventSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["weapon", "ocr", "nudity", "nsfw", "middle_finger", "both", "multiple"],
+    enum: ["weapon", "ocr", "nudity", "nsfw", "middle_finger", "emotion", "both", "multiple"],
     default: "weapon"
   },
   label: { type: String, default: "" },
@@ -19,6 +19,10 @@ const VideoEventSchema = new mongoose.Schema({
   ocrHarmful: { type: Boolean, default: false },
   middleFinger: { type: Boolean, default: false },
   nsfw: { type: Boolean, default: false },
+  emotion: { type: String, default: "" },
+  emotionScore: { type: Number, default: 0 },
+  emotionHarmful: { type: Boolean, default: false },
+  fusionVotes: { type: String, default: "" },
   snapshotPath: { type: String, default: "" },
   snapshotCloudURL: { type: String, default: "" },
   warningSent: { type: Boolean, default: true },

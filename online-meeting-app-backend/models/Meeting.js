@@ -155,6 +155,26 @@ const MeetingSchema = new mongoose.Schema({
 
     },
 
+    /* ===== FUSION RISK (per-user aggregated across modalities) ===== */
+
+    fusion: {
+
+      textAlerts: { type: Number, default: 0 },
+      audioAlerts: { type: Number, default: 0 },
+      videoAlerts: { type: Number, default: 0 },
+      emotionAlerts: { type: Number, default: 0 },
+      totalAlerts: { type: Number, default: 0 },
+
+      // "low" | "medium" | "high" | "critical"
+      riskLevel: { type: String, default: "low" },
+
+      // e.g. "3 text + 1 video + 1 audio"
+      riskSummary: { type: String, default: "" },
+
+      lastUpdated: { type: Date, default: null },
+
+    },
+
     /* ===== OVERALL MEETING RISK ===== */
 
     overallRiskScore: {

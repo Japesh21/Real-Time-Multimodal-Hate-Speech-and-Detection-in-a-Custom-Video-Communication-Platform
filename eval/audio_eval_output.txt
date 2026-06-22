@@ -1,0 +1,750 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 8740.40it/s]
+[1mRobertaForSequenceClassification LOAD REPORT[0m from: cardiffnlp/twitter-roberta-base-offensive
+Key                             | Status     |  | 
+--------------------------------+------------+--+-
+roberta.embeddings.position_ids | UNEXPECTED |  | 
+
+[3mNotes:
+- UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
+Loading weights:   0%|          | 0/199 [00:00<?, ?it/s]Loading weights: 100%|██████████| 199/199 [00:00<00:00, 4370.90it/s]
+[1mBertForSequenceClassification LOAD REPORT[0m from: GroNLP/hateBERT
+Key                                        | Status     | 
+-------------------------------------------+------------+-
+cls.predictions.transform.dense.bias       | UNEXPECTED | 
+cls.predictions.transform.LayerNorm.bias   | UNEXPECTED | 
+cls.predictions.transform.dense.weight     | UNEXPECTED | 
+cls.predictions.bias                       | UNEXPECTED | 
+cls.predictions.transform.LayerNorm.weight | UNEXPECTED | 
+classifier.weight                          | MISSING    | 
+classifier.bias                            | MISSING    | 
+
+[3mNotes:
+- UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING[3m	:those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.[0m
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights: 100%|██████████| 201/201 [00:00<00:00, 3683.02it/s]
+[1mBertForSequenceClassification LOAD REPORT[0m from: unitary/toxic-bert
+Key                          | Status     |  | 
+-----------------------------+------------+--+-
+bert.embeddings.position_ids | UNEXPECTED |  | 
+
+[3mNotes:
+- UNEXPECTED[3m	:can be ignored when loading from different task/architecture; not ok if you expect identical arch.[0m
+Loading data/audio_labels.csv ...
+Running audio pipeline on 300 samples ...
+  0/300
+[TEXT] 'Geez, are you forgetful. We've already discussed why Marx wa'
+  RoBERTa=0.6573  HateBERT=0.4243  BiLSTM=0.4681  ToxicRoBERTa=0.0526
+  Active labels: []
+  Ensemble=0.3798  Votes=1/4  -> non-offensive
+[TEXT] 'Karyoka RFA, thanks for your support on my request for  admi'
+  RoBERTa=0.0536  HateBERT=0.4061  BiLSTM=0.4681  ToxicRoBERTa=0.0005
+  Active labels: []
+  Ensemble=0.2087  Votes=0/4  -> non-offensive
+[TEXT] 'Birthday, no worries. It's what I do. Winking face. Enjoy a '
+  RoBERTa=0.1043  HateBERT=0.4118  BiLSTM=0.4682  ToxicRoBERTa=0.0302
+  Active labels: []
+  Ensemble=0.2317  Votes=0/4  -> non-offensive
+[TEXT] 'Pseudoscience category, I'm assuming that this article is in'
+  RoBERTa=0.1539  HateBERT=0.4177  BiLSTM=0.4688  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2369  Votes=0/4  -> non-offensive
+[TEXT] 'And if such phrase exists, it would be provided by search en'
+  RoBERTa=0.1058  HateBERT=0.4322  BiLSTM=0.4679  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2283  Votes=0/4  -> non-offensive
+[TEXT] 'The 9th of October 2007, UTC, P, S, the delta function I use'
+  RoBERTa=0.1394  HateBERT=0.4656  BiLSTM=0.4687  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2452  Votes=0/4  -> non-offensive
+[TEXT] 'The 10th of September 1910, Kuwait'
+  RoBERTa=0.1595  HateBERT=0.4051  BiLSTM=0.4681  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.235  Votes=0/4  -> non-offensive
+[TEXT] 'Negro League Baseball Task Force Talk'
+  RoBERTa=0.186  HateBERT=0.4025  BiLSTM=0.4681  ToxicRoBERTa=0.0065
+  Active labels: []
+  Ensemble=0.2427  Votes=0/4  -> non-offensive
+[TEXT] 'List of my three sons episodes.  I saw you redirected two of'
+  RoBERTa=0.0687  HateBERT=0.4742  BiLSTM=0.4688  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2297  Votes=0/4  -> non-offensive
+[TEXT] 'Quoting law master in order to make sure you understand me'
+  RoBERTa=0.0869  HateBERT=0.3885  BiLSTM=0.4682  ToxicRoBERTa=0.0018
+  Active labels: []
+  Ensemble=0.213  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Please do not window lies pages, as you did with this'
+  RoBERTa=0.0895  HateBERT=0.4127  BiLSTM=0.4676  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2193  Votes=0/4  -> non-offensive
+[TEXT] 'Quote CC BY SAR is probably the most common variation used o'
+  RoBERTa=0.0586  HateBERT=0.454  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2221  Votes=0/4  -> non-offensive
+[TEXT] 'Actually, that's gone now, you're the only one naming him no'
+  RoBERTa=0.0961  HateBERT=0.3477  BiLSTM=0.4681  ToxicRoBERTa=0.0032
+  Active labels: []
+  Ensemble=0.2055  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, move the article to its full English title.  One, kee'
+  RoBERTa=0.0764  HateBERT=0.4523  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2261  Votes=0/4  -> non-offensive
+[TEXT] 'There are so many articles that wish to downplay the parts o'
+  RoBERTa=0.1853  HateBERT=0.4231  BiLSTM=0.4689  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2461  Votes=0/4  -> non-offensive
+[TEXT] 'I see you have such a low self-esteem that you have to warn '
+  RoBERTa=0.3168  HateBERT=0.4012  BiLSTM=0.4693  ToxicRoBERTa=0.0674
+  Active labels: []
+  Ensemble=0.2936  Votes=0/4  -> non-offensive
+[TEXT] 'Ed Poor. I shouldn't have to check his edit history. He shou'
+  RoBERTa=0.1524  HateBERT=0.3857  BiLSTM=0.4688  ToxicRoBERTa=0.0016
+  Active labels: []
+  Ensemble=0.2288  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, that is not a list of official names of official neig'
+  RoBERTa=0.0938  HateBERT=0.4303  BiLSTM=0.4681  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2248  Votes=0/4  -> non-offensive
+[TEXT] 'Yes, merge, chamin and kaulint are one and the same. Kaulint'
+  RoBERTa=0.2093  HateBERT=0.4795  BiLSTM=0.4688  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2662  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, the 26th of July 2014, UTC, there are a number of key'
+  RoBERTa=0.1878  HateBERT=0.4307  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2485  Votes=0/4  -> non-offensive
+[TEXT] 'I'm just going to state, as I have observed, that the LPs do'
+  RoBERTa=0.1016  HateBERT=0.3988  BiLSTM=0.4675  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2188  Votes=0/4  -> non-offensive
+[TEXT] 'No worries, we will use another account, and will not stop u'
+  RoBERTa=0.6198  HateBERT=0.3826  BiLSTM=0.4683  ToxicRoBERTa=0.8758
+  Active labels: ['toxic', 'identity_attack']
+  Ensemble=0.607  Votes=2/4  -> toxic
+[TEXT] 'Do not repeatedly add nonsense to articles.'
+  RoBERTa=0.3926  HateBERT=0.4534  BiLSTM=0.4671  ToxicRoBERTa=0.0138
+  Active labels: []
+  Ensemble=0.3091  Votes=0/4  -> non-offensive
+[TEXT] 'Question, Hello Lattix, I noticed that you revert vandalism '
+  RoBERTa=0.1362  HateBERT=0.3725  BiLSTM=0.4689  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2212  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Murphy Arts Center CopyVuo, could you confirm the URL'
+  RoBERTa=0.1068  HateBERT=0.497  BiLSTM=0.469  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.245  Votes=0/4  -> non-offensive
+  25/300
+[TEXT] 'By the way, who do you think you are?  Warning me about remo'
+  RoBERTa=0.1834  HateBERT=0.4395  BiLSTM=0.4689  ToxicRoBERTa=0.0675
+  Active labels: []
+  Ensemble=0.2698  Votes=0/4  -> non-offensive
+[TEXT] 'Renzo is 16, shuts the fuck up'
+  RoBERTa=0.9197  HateBERT=0.3451  BiLSTM=0.4683  ToxicRoBERTa=0.9969
+  Active labels: ['toxic', 'obscene', 'insult']
+  Ensemble=0.7089  Votes=2/4  -> toxic
+[TEXT] 'Hey, everybody's doing it. Hey, relief.'
+  RoBERTa=0.0566  HateBERT=0.3744  BiLSTM=0.4681  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2016  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Email, I just used the EmailThisUser function.  How c'
+  RoBERTa=0.039  HateBERT=0.4136  BiLSTM=0.468  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.207  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, No, I never said one is better than the other, they a'
+  RoBERTa=0.1839  HateBERT=0.4302  BiLSTM=0.4688  ToxicRoBERTa=0.0024
+  Active labels: []
+  Ensemble=0.248  Votes=0/4  -> non-offensive
+[TEXT] 'ACWPWW Hi, I don't know if you've seen the conversation at W'
+  RoBERTa=0.0702  HateBERT=0.4247  BiLSTM=0.4688  ToxicRoBERTa=0.0019
+  Active labels: []
+  Ensemble=0.2181  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, I hope you are having a great holiday and at your con'
+  RoBERTa=0.0709  HateBERT=0.4189  BiLSTM=0.4704  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2167  Votes=0/4  -> non-offensive
+[TEXT] 'Third-party observations left at user__talk Elonka hashtag r'
+  RoBERTa=0.0982  HateBERT=0.4107  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2211  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, in this instance, I don't believe there is much poten'
+  RoBERTa=0.099  HateBERT=0.4665  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2353  Votes=0/4  -> non-offensive
+[TEXT] 'Top 100, no way, look at all the great base stealers and hal'
+  RoBERTa=0.1715  HateBERT=0.3949  BiLSTM=0.4687  ToxicRoBERTa=0.0026
+  Active labels: []
+  Ensemble=0.2361  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Quack Guru, good luck with your communication attempt'
+  RoBERTa=0.0509  HateBERT=0.435  BiLSTM=0.4686  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2154  Votes=0/4  -> non-offensive
+[TEXT] 'Suck my dikkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk'
+  RoBERTa=0.4181  HateBERT=0.371  BiLSTM=0.4679  ToxicRoBERTa=0.9968
+  Active labels: ['toxic', 'obscene', 'insult']
+  Ensemble=0.5899  Votes=1/4  -> non-offensive
+[TEXT] 'Still you dehoist self, looks your integrity hasn't improved'
+  RoBERTa=0.3519  HateBERT=0.4102  BiLSTM=0.4683  ToxicRoBERTa=0.0245
+  Active labels: []
+  Ensemble=0.2915  Votes=0/4  -> non-offensive
+[TEXT] 'Please do not write me more, silly, perhaps no one has told '
+  RoBERTa=0.4539  HateBERT=0.4098  BiLSTM=0.4679  ToxicRoBERTa=0.8121
+  Active labels: ['toxic']
+  Ensemble=0.5531  Votes=1/4  -> non-offensive
+[TEXT] 'You're a joke, you're a joke, you're a joke, you're a joke, '
+  RoBERTa=0.4258  HateBERT=0.3939  BiLSTM=0.4664  ToxicRoBERTa=0.8224
+  Active labels: ['toxic']
+  Ensemble=0.5449  Votes=1/4  -> non-offensive
+[TEXT] 'Hi, Kannadiga, shame on you. You look like a terrible ass no'
+  RoBERTa=0.8971  HateBERT=0.4099  BiLSTM=0.4679  ToxicRoBERTa=0.9648
+  Active labels: ['toxic', 'obscene', 'insult']
+  Ensemble=0.7098  Votes=2/4  -> toxic
+[TEXT] 'Your Use of Multiple Wikipedia Accounts'
+  RoBERTa=0.1395  HateBERT=0.373  BiLSTM=0.4676  ToxicRoBERTa=0.0021
+  Active labels: []
+  Ensemble=0.2223  Votes=0/4  -> non-offensive
+[TEXT] 'quote, to Paul B or whomever has taken the responsibility fo'
+  RoBERTa=0.1204  HateBERT=0.425  BiLSTM=0.4696  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2305  Votes=0/4  -> non-offensive
+[TEXT] 'That is a useful correction, but was the number of settings '
+  RoBERTa=0.1041  HateBERT=0.4406  BiLSTM=0.4675  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2299  Votes=0/4  -> non-offensive
+[TEXT] 'Seems a reasonable request reasonable to me.'
+  RoBERTa=0.1245  HateBERT=0.3437  BiLSTM=0.4677  ToxicRoBERTa=0.0005
+  Active labels: []
+  Ensemble=0.2107  Votes=0/4  -> non-offensive
+[TEXT] 'You just made my point, that was my addition, volunteer move'
+  RoBERTa=0.0968  HateBERT=0.3969  BiLSTM=0.4682  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2173  Votes=0/4  -> non-offensive
+[TEXT] 'Definition of web on internet page.  I take issue with the d'
+  RoBERTa=0.1142  HateBERT=0.4472  BiLSTM=0.4687  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2343  Votes=0/4  -> non-offensive
+[TEXT] 'Once again, leave me alone. You are bothering me for the sak'
+  RoBERTa=0.2206  HateBERT=0.3964  BiLSTM=0.469  ToxicRoBERTa=0.0039
+  Active labels: []
+  Ensemble=0.2492  Votes=0/4  -> non-offensive
+[TEXT] 'Quote Nevada mean on checking all reliable sources.  I could'
+  RoBERTa=0.3284  HateBERT=0.4651  BiLSTM=0.4682  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2922  Votes=0/4  -> non-offensive
+[TEXT] 'You lengthened my block again to 2 weeks?  For what now?  Fo'
+  RoBERTa=0.1186  HateBERT=0.3951  BiLSTM=0.4682  ToxicRoBERTa=0.0659
+  Active labels: []
+  Ensemble=0.2418  Votes=0/4  -> non-offensive
+  50/300
+[TEXT] 'December 2008. Please stop removing speedy deletion notices '
+  RoBERTa=0.1424  HateBERT=0.38  BiLSTM=0.4687  ToxicRoBERTa=0.0011
+  Active labels: []
+  Ensemble=0.2247  Votes=0/4  -> non-offensive
+[TEXT] 'TV Newser is a blog about journalism by professional journal'
+  RoBERTa=0.0577  HateBERT=0.455  BiLSTM=0.4676  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2219  Votes=0/4  -> non-offensive
+[TEXT] 'No difference, simply two branches of the same nation.'
+  RoBERTa=0.1674  HateBERT=0.3855  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2321  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, your tool to edit count summary.  I was wondering if '
+  RoBERTa=0.0727  HateBERT=0.4177  BiLSTM=0.4694  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2167  Votes=0/4  -> non-offensive
+[TEXT] 'True, but then our remarks on this obscure web page haven't '
+  RoBERTa=0.16  HateBERT=0.4488  BiLSTM=0.4687  ToxicRoBERTa=0.0215
+  Active labels: []
+  Ensemble=0.2524  Votes=0/4  -> non-offensive
+[TEXT] 'Tekken Carrot on G4 they said Tekken will be on number 60 al'
+  RoBERTa=0.108  HateBERT=0.4826  BiLSTM=0.4688  ToxicRoBERTa=0.0016
+  Active labels: []
+  Ensemble=0.2419  Votes=0/4  -> non-offensive
+[TEXT] 'The title issue is a little more serious than you are giving'
+  RoBERTa=0.132  HateBERT=0.3996  BiLSTM=0.4685  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2268  Votes=0/4  -> non-offensive
+[TEXT] 'You got it. Okay, looks like you have the right idea now. Li'
+  RoBERTa=0.0371  HateBERT=0.3776  BiLSTM=0.4683  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.1975  Votes=0/4  -> non-offensive
+[TEXT] 'By the way I remember the first Israeli claims shortly after'
+  RoBERTa=0.1422  HateBERT=0.4612  BiLSTM=0.4688  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2448  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, unauthorized change on the 26th of January 2014, i.e.'
+  RoBERTa=0.1338  HateBERT=0.4296  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2348  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Ambarish Srivastava, Ambarish Srivastava, good evenin'
+  RoBERTa=0.0997  HateBERT=0.4403  BiLSTM=0.4676  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2287  Votes=0/4  -> non-offensive
+[TEXT] 'Actually, the real world sources and policy are with us, and'
+  RoBERTa=0.0659  HateBERT=0.4428  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.221  Votes=0/4  -> non-offensive
+[TEXT] 'The permissions on those are as they were.  Since you seem t'
+  RoBERTa=0.0551  HateBERT=0.4416  BiLSTM=0.4687  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2181  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, sock puppet, oh no stifle, just what do you think you'
+  RoBERTa=0.2394  HateBERT=0.4096  BiLSTM=0.4688  ToxicRoBERTa=0.2727
+  Active labels: []
+  Ensemble=0.3378  Votes=0/4  -> non-offensive
+[TEXT] 'Pro-Life Alliance. The article Pro-Life Alliance has been no'
+  RoBERTa=0.134  HateBERT=0.4072  BiLSTM=0.4681  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2292  Votes=0/4  -> non-offensive
+[TEXT] 'You're a dumb American, right?  No degree, knows nothing of '
+  RoBERTa=0.8652  HateBERT=0.4226  BiLSTM=0.4675  ToxicRoBERTa=0.6297
+  Active labels: ['toxic']
+  Ensemble=0.6044  Votes=2/4  -> toxic
+[TEXT] 'Well to answer the IP it should be any player who Nadal has '
+  RoBERTa=0.0786  HateBERT=0.4329  BiLSTM=0.4677  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2216  Votes=0/4  -> non-offensive
+[TEXT] 'How funny. How funny.'
+  RoBERTa=0.273  HateBERT=0.3568  BiLSTM=0.4679  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2513  Votes=0/4  -> non-offensive
+[TEXT] 'Please do not carry on conversations with other users on my '
+  RoBERTa=0.0502  HateBERT=0.4058  BiLSTM=0.4671  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2076  Votes=0/4  -> non-offensive
+[TEXT] 'I know it's almost a year after the fact, but the fact is mo'
+  RoBERTa=0.0891  HateBERT=0.4127  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2193  Votes=0/4  -> non-offensive
+[TEXT] 'Quote second verse same as the first HTTPS secure dot wikime'
+  RoBERTa=0.1451  HateBERT=0.4398  BiLSTM=0.4687  ToxicRoBERTa=0.0014
+  Active labels: []
+  Ensemble=0.2404  Votes=0/4  -> non-offensive
+[TEXT] 'or Swansea Bay Articles.'
+  RoBERTa=0.1732  HateBERT=0.4483  BiLSTM=0.4679  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2491  Votes=0/4  -> non-offensive
+[TEXT] 'Definitions soapbox one tab also soapbox and improvised plat'
+  RoBERTa=0.2685  HateBERT=0.4872  BiLSTM=0.4687  ToxicRoBERTa=0.0014
+  Active labels: []
+  Ensemble=0.2831  Votes=0/4  -> non-offensive
+[TEXT] 'Am I going mad? I was on Steven Seagal page this morning and'
+  RoBERTa=0.2531  HateBERT=0.3825  BiLSTM=0.4693  ToxicRoBERTa=0.0019
+  Active labels: []
+  Ensemble=0.2533  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Then I think you may be missing something.  The EU bo'
+  RoBERTa=0.0867  HateBERT=0.454  BiLSTM=0.469  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2292  Votes=0/4  -> non-offensive
+  75/300
+[TEXT] 'Quote, advice to save me writing too much.  A lot of this is'
+  RoBERTa=0.087  HateBERT=0.4357  BiLSTM=0.4678  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2244  Votes=0/4  -> non-offensive
+[TEXT] 'I thought he was Greek.'
+  RoBERTa=0.2792  HateBERT=0.3963  BiLSTM=0.469  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2629  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Please do not window lies pages, as you did with this'
+  RoBERTa=0.2044  HateBERT=0.4068  BiLSTM=0.4669  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2464  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, note, and continue to vandalize this page by includin'
+  RoBERTa=0.2223  HateBERT=0.4079  BiLSTM=0.4687  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2516  Votes=0/4  -> non-offensive
+[TEXT] 'Far more honest than this bloated article.  Oh no. Disagreem'
+  RoBERTa=0.4183  HateBERT=0.4385  BiLSTM=0.4681  ToxicRoBERTa=0.0312
+  Active labels: []
+  Ensemble=0.3172  Votes=0/4  -> non-offensive
+[TEXT] 'I believe the rule includes non-binding electrons as well as'
+  RoBERTa=0.094  HateBERT=0.3902  BiLSTM=0.4688  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.215  Votes=0/4  -> non-offensive
+[TEXT] 'Runny Mead, Bob, you've removed a link from a page that I cr'
+  RoBERTa=0.0633  HateBERT=0.4002  BiLSTM=0.4679  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2097  Votes=0/4  -> non-offensive
+[TEXT] 'Sorry, you are right. I have confused matters.  We will try '
+  RoBERTa=0.0766  HateBERT=0.4328  BiLSTM=0.4683  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2212  Votes=0/4  -> non-offensive
+[TEXT] 'recent past PC user page 129.133.124.199'
+  RoBERTa=0.1641  HateBERT=0.3695  BiLSTM=0.4681  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2273  Votes=0/4  -> non-offensive
+[TEXT] 'You're gay, douche-like, gay, pono, ha-ga-ga-ga-ga.'
+  RoBERTa=0.7985  HateBERT=0.3844  BiLSTM=0.4681  ToxicRoBERTa=0.9897
+  Active labels: ['toxic', 'obscene', 'insult', 'identity_attack']
+  Ensemble=0.6863  Votes=2/4  -> toxic
+[TEXT] 'Quote, Well, I was thinking a good article could fall out of'
+  RoBERTa=0.0701  HateBERT=0.4234  BiLSTM=0.4684  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2172  Votes=0/4  -> non-offensive
+[TEXT] 'The preceding unsigned comment was added by  Talk, Contribs,'
+  RoBERTa=0.086  HateBERT=0.4324  BiLSTM=0.4681  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2234  Votes=0/4  -> non-offensive
+[TEXT] 'Quote. Thank you. Thank you for your constructive contributi'
+  RoBERTa=0.0637  HateBERT=0.4002  BiLSTM=0.4689  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.21  Votes=0/4  -> non-offensive
+[TEXT] 'Wikipedia blocks because of their pedo article.  If you go t'
+  RoBERTa=0.6268  HateBERT=0.4037  BiLSTM=0.4681  ToxicRoBERTa=0.185
+  Active labels: []
+  Ensemble=0.4067  Votes=1/4  -> non-offensive
+[TEXT] 'Oh, I see that we are working with different definitions of '
+  RoBERTa=0.1292  HateBERT=0.4181  BiLSTM=0.4682  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2306  Votes=0/4  -> non-offensive
+[TEXT] 'Do not help the Jews, Shanaida.  Final warning.'
+  RoBERTa=0.2056  HateBERT=0.4616  BiLSTM=0.4672  ToxicRoBERTa=0.7046
+  Active labels: ['toxic']
+  Ensemble=0.4716  Votes=1/4  -> non-offensive
+[TEXT] 'Quote, You are very welcome, Milla, by the way, you or we co'
+  RoBERTa=0.0856  HateBERT=0.3987  BiLSTM=0.469  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2151  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, If the title was never actually created, I wouldn't h'
+  RoBERTa=0.1384  HateBERT=0.4261  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.235  Votes=0/4  -> non-offensive
+[TEXT] 'Extremely salient points. Some things I had not considered. '
+  RoBERTa=0.2839  HateBERT=0.4437  BiLSTM=0.4686  ToxicRoBERTa=0.0079
+  Active labels: []
+  Ensemble=0.278  Votes=0/4  -> non-offensive
+[TEXT] 'I take it you did read this.  Great Block, Ryan, and Ammu.'
+  RoBERTa=0.0546  HateBERT=0.387  BiLSTM=0.4694  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2045  Votes=0/4  -> non-offensive
+[TEXT] 'I admit what I did was improper, and it won't happen again.'
+  RoBERTa=0.2325  HateBERT=0.372  BiLSTM=0.4691  ToxicRoBERTa=0.0011
+  Active labels: []
+  Ensemble=0.2453  Votes=0/4  -> non-offensive
+[TEXT] 'Tag for possible deletion on Derry City related photos.  I n'
+  RoBERTa=0.0724  HateBERT=0.4356  BiLSTM=0.469  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.221  Votes=0/4  -> non-offensive
+[TEXT] 'Killer whale attacks on humans.  Read this revert, see here.'
+  RoBERTa=0.3628  HateBERT=0.4149  BiLSTM=0.4681  ToxicRoBERTa=0.0027
+  Active labels: []
+  Ensemble=0.2889  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Nico contains a lot of in-universe writing, or writin'
+  RoBERTa=0.0866  HateBERT=0.4311  BiLSTM=0.4684  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2233  Votes=0/4  -> non-offensive
+[TEXT] 'It's still big C. Can you change it with your admin power?  '
+  RoBERTa=0.2492  HateBERT=0.4231  BiLSTM=0.469  ToxicRoBERTa=0.0379
+  Active labels: []
+  Ensemble=0.2732  Votes=0/4  -> non-offensive
+  100/300
+[TEXT] 'Quote, I thought it was self explanatory.  I guess not.  It '
+  RoBERTa=0.2171  HateBERT=0.4193  BiLSTM=0.4689  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2531  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, no, album roots is manly groove metal, but song roots'
+  RoBERTa=0.3629  HateBERT=0.4139  BiLSTM=0.4677  ToxicRoBERTa=0.001
+  Active labels: []
+  Ensemble=0.288  Votes=0/4  -> non-offensive
+[TEXT] 'This article included a link to the Center for Marcionite Re'
+  RoBERTa=0.0955  HateBERT=0.4598  BiLSTM=0.4677  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2325  Votes=0/4  -> non-offensive
+[TEXT] 'And you are a motherfucking asshole, suck your dick, you dir'
+  RoBERTa=0.9528  HateBERT=0.3405  BiLSTM=0.4678  ToxicRoBERTa=0.998
+  Active labels: ['toxic', 'obscene', 'insult']
+  Ensemble=0.7163  Votes=2/4  -> toxic
+[TEXT] 'Are you sure your Greek is not, let's say native?'
+  RoBERTa=0.1332  HateBERT=0.4144  BiLSTM=0.467  ToxicRoBERTa=0.0044
+  Active labels: []
+  Ensemble=0.2316  Votes=0/4  -> non-offensive
+[TEXT] 'I have to say I disagree a little bit on the Colorado and Mi'
+  RoBERTa=0.1172  HateBERT=0.3965  BiLSTM=0.4692  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2224  Votes=0/4  -> non-offensive
+[TEXT] '1816, the 24th of March 2004, UTC, this is the discussion pa'
+  RoBERTa=0.1577  HateBERT=0.413  BiLSTM=0.4686  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2366  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, speedy deletion of Frugosecape.  A page you created, '
+  RoBERTa=0.1703  HateBERT=0.4393  BiLSTM=0.4687  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2464  Votes=0/4  -> non-offensive
+[TEXT] 'Why would a page on this website called Talk Rangers be the '
+  RoBERTa=0.0764  HateBERT=0.4487  BiLSTM=0.4683  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2251  Votes=0/4  -> non-offensive
+[TEXT] 'Don't talk to me troll'
+  RoBERTa=0.5476  HateBERT=0.3723  BiLSTM=0.468  ToxicRoBERTa=0.8641
+  Active labels: ['toxic']
+  Ensemble=0.5828  Votes=2/4  -> toxic
+[TEXT] 'My above heartfelt apology extends to you here, Rich Fombrou'
+  RoBERTa=0.5579  HateBERT=0.3873  BiLSTM=0.4683  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.3302  Votes=1/4  -> non-offensive
+[TEXT] '== Commodore Ballroom == The sentence lists Grammy and Juno '
+  RoBERTa=0.0781  HateBERT=0.4224  BiLSTM=0.468  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2189  Votes=0/4  -> non-offensive
+[TEXT] 'Apples and oranges. Jonathan Raban is not a rabid extremist.'
+  RoBERTa=0.4925  HateBERT=0.4063  BiLSTM=0.4684  ToxicRoBERTa=0.022
+  Active labels: []
+  Ensemble=0.325  Votes=0/4  -> non-offensive
+[TEXT] 'Criticism. I think a criticism section should be added. Many'
+  RoBERTa=0.1412  HateBERT=0.4535  BiLSTM=0.4682  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2425  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, should we even mention this?  However, blocked videos'
+  RoBERTa=0.1514  HateBERT=0.462  BiLSTM=0.4687  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2473  Votes=0/4  -> non-offensive
+[TEXT] 'Intelligent and honest reader'
+  RoBERTa=0.1642  HateBERT=0.4135  BiLSTM=0.4679  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2382  Votes=0/4  -> non-offensive
+[TEXT] 'If you really want to shorten this section, probably the fir'
+  RoBERTa=0.0782  HateBERT=0.4101  BiLSTM=0.4677  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2158  Votes=0/4  -> non-offensive
+[TEXT] 'Please do not add defamatory contents to Wikipedia, as you d'
+  RoBERTa=0.9202  HateBERT=0.3782  BiLSTM=0.4677  ToxicRoBERTa=0.9901
+  Active labels: ['toxic', 'obscene', 'insult']
+  Ensemble=0.7152  Votes=2/4  -> toxic
+[TEXT] 'Willy Wham! A tag has been placed on Willy Wham! requesting '
+  RoBERTa=0.1065  HateBERT=0.4171  BiLSTM=0.4675  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2247  Votes=0/4  -> non-offensive
+[TEXT] 'A kitten for you, lolz'
+  RoBERTa=0.1753  HateBERT=0.3762  BiLSTM=0.4675  ToxicRoBERTa=0.0068
+  Active labels: []
+  Ensemble=0.2334  Votes=0/4  -> non-offensive
+[TEXT] 'copyright problem removed. This article was based on Power A'
+  RoBERTa=0.1439  HateBERT=0.4225  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2355  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Well, I learned the hard way with a three month topic'
+  RoBERTa=0.1327  HateBERT=0.4065  BiLSTM=0.4688  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2288  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Wikipedia is not an indiscriminate collection of info'
+  RoBERTa=0.1203  HateBERT=0.431  BiLSTM=0.4681  ToxicRoBERTa=0.0009
+  Active labels: []
+  Ensemble=0.2317  Votes=0/4  -> non-offensive
+[TEXT] 'Then how am I supposed to communicate?'
+  RoBERTa=0.1108  HateBERT=0.3702  BiLSTM=0.4684  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2141  Votes=0/4  -> non-offensive
+[TEXT] 'Looked through this article, why do you think that RD entry '
+  RoBERTa=0.0916  HateBERT=0.4121  BiLSTM=0.468  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2197  Votes=0/4  -> non-offensive
+  125/300
+[TEXT] 'Quote, No, I'm not ranting and you're tautology about if the'
+  RoBERTa=0.2839  HateBERT=0.4385  BiLSTM=0.4681  ToxicRoBERTa=0.0043
+  Active labels: []
+  Ensemble=0.2755  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, uh, no, but I can't really be bothered to argue about'
+  RoBERTa=0.1428  HateBERT=0.4055  BiLSTM=0.4681  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2309  Votes=0/4  -> non-offensive
+[TEXT] 'Orcs and homophobia. I provided a full citation that proves '
+  RoBERTa=0.8376  HateBERT=0.4023  BiLSTM=0.4681  ToxicRoBERTa=0.9616
+  Active labels: ['toxic', 'obscene']
+  Ensemble=0.6921  Votes=2/4  -> toxic
+[TEXT] 'Quote, is a scientifically proven epitome of an asshole, str'
+  RoBERTa=0.6126  HateBERT=0.4361  BiLSTM=0.4684  ToxicRoBERTa=0.8423
+  Active labels: ['toxic', 'obscene']
+  Ensemble=0.6085  Votes=2/4  -> toxic
+[TEXT] 'User, Adam JWC, Hi Sardaka, the above user has been using so'
+  RoBERTa=0.2201  HateBERT=0.3824  BiLSTM=0.4687  ToxicRoBERTa=0.0044
+  Active labels: []
+  Ensemble=0.2457  Votes=0/4  -> non-offensive
+[TEXT] 'To Zora, I have gotten all the pictures from one web page an'
+  RoBERTa=0.0674  HateBERT=0.4111  BiLSTM=0.4692  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2136  Votes=0/4  -> non-offensive
+[TEXT] 'Pax, stop using pro-Serb sources so much.  It makes you look'
+  RoBERTa=0.1846  HateBERT=0.4423  BiLSTM=0.4687  ToxicRoBERTa=0.0319
+  Active labels: []
+  Ensemble=0.26  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, my pleasure. You deserve it and thank you for conside'
+  RoBERTa=0.0342  HateBERT=0.4152  BiLSTM=0.4684  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2062  Votes=0/4  -> non-offensive
+[TEXT] 'You've got another thing coming, Picker78 always wins, Picke'
+  RoBERTa=0.0558  HateBERT=0.3775  BiLSTM=0.4681  ToxicRoBERTa=0.0121
+  Active labels: []
+  Ensemble=0.2056  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, all this has been cited, making your complaints feebl'
+  RoBERTa=0.1059  HateBERT=0.4519  BiLSTM=0.4678  ToxicRoBERTa=0.0012
+  Active labels: []
+  Ensemble=0.2334  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Parkwell's, yes, I went to the source you referred li'
+  RoBERTa=0.2666  HateBERT=0.4174  BiLSTM=0.4688  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2649  Votes=0/4  -> non-offensive
+[TEXT] 'No idea what you are on about equals Luhansk Tepla was you  '
+  RoBERTa=0.1234  HateBERT=0.4277  BiLSTM=0.4706  ToxicRoBERTa=0.0136
+  Active labels: []
+  Ensemble=0.236  Votes=0/4  -> non-offensive
+[TEXT] 'You left me a note a couple days ago about whether I thought'
+  RoBERTa=0.1337  HateBERT=0.4397  BiLSTM=0.4685  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2372  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, you're right that speed cameras and lowered speed lim'
+  RoBERTa=0.1948  HateBERT=0.4651  BiLSTM=0.4688  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2589  Votes=0/4  -> non-offensive
+[TEXT] 'Quote to user Martin Hogbin.  Look, I would do it if it were'
+  RoBERTa=0.1238  HateBERT=0.4156  BiLSTM=0.4687  ToxicRoBERTa=0.0013
+  Active labels: []
+  Ensemble=0.229  Votes=0/4  -> non-offensive
+[TEXT] 'It doesn't offend me about painful death or the war, no.  It'
+  RoBERTa=0.336  HateBERT=0.4234  BiLSTM=0.468  ToxicRoBERTa=0.0012
+  Active labels: []
+  Ensemble=0.2838  Votes=0/4  -> non-offensive
+[TEXT] 'Another option would be to do a minimal cleanup of Rattlesna'
+  RoBERTa=0.082  HateBERT=0.4115  BiLSTM=0.4686  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2173  Votes=0/4  -> non-offensive
+[TEXT] 'Hello. Hey, I am new here. I would like to make new friends.'
+  RoBERTa=0.034  HateBERT=0.3833  BiLSTM=0.4685  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.1982  Votes=0/4  -> non-offensive
+[TEXT] 'Like this, Ho, 101.190.151.84'
+  RoBERTa=0.1012  HateBERT=0.3779  BiLSTM=0.4679  ToxicRoBERTa=0.0014
+  Active labels: []
+  Ensemble=0.2138  Votes=0/4  -> non-offensive
+[TEXT] 'I just wanted to ask, why doesn't this say anything about th'
+  RoBERTa=0.3787  HateBERT=0.4228  BiLSTM=0.4692  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2944  Votes=0/4  -> non-offensive
+[TEXT] 'quote vandalism by user wiggy deletes official polish name o'
+  RoBERTa=0.1742  HateBERT=0.4318  BiLSTM=0.4687  ToxicRoBERTa=0.0011
+  Active labels: []
+  Ensemble=0.2456  Votes=0/4  -> non-offensive
+[TEXT] 'Redirect Talk Conspiracy Theory with Jesse Ventura'
+  RoBERTa=0.1323  HateBERT=0.4331  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2352  Votes=0/4  -> non-offensive
+[TEXT] 'July 2006  UTC stop trying to twist everything I say into a '
+  RoBERTa=0.4814  HateBERT=0.3875  BiLSTM=0.4685  ToxicRoBERTa=0.054
+  Active labels: []
+  Ensemble=0.3271  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Are you forgetting risker that it was I that embraced'
+  RoBERTa=0.1457  HateBERT=0.3858  BiLSTM=0.4689  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2269  Votes=0/4  -> non-offensive
+[TEXT] 'Placings. Do we know the rank of the other 9 acts who didn't'
+  RoBERTa=0.0802  HateBERT=0.3865  BiLSTM=0.4679  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2105  Votes=0/4  -> non-offensive
+  150/300
+[TEXT] 'Innocent or not, vote here, I say, probably guilty, but I do'
+  RoBERTa=0.1132  HateBERT=0.4323  BiLSTM=0.4686  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2303  Votes=0/4  -> non-offensive
+[TEXT] 'One question, what was Mr. Anderson's wife's name?'
+  RoBERTa=0.0992  HateBERT=0.388  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2156  Votes=0/4  -> non-offensive
+[TEXT] 'Hi sir, thanks for your interest in my page about Spree soft'
+  RoBERTa=0.1002  HateBERT=0.4546  BiLSTM=0.4688  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2326  Votes=0/4  -> non-offensive
+[TEXT] 'http my.safari books online.com slash books slash electrical'
+  RoBERTa=0.0854  HateBERT=0.4403  BiLSTM=0.4684  ToxicRoBERTa=0.001
+  Active labels: []
+  Ensemble=0.2254  Votes=0/4  -> non-offensive
+[TEXT] 'Quote singer list. Hi, I have an idea that would allow peopl'
+  RoBERTa=0.0699  HateBERT=0.4386  BiLSTM=0.4687  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.221  Votes=0/4  -> non-offensive
+[TEXT] 'L.A. Nawa, 2011 video game, Hi Diego Moya, I noticed you cre'
+  RoBERTa=0.0636  HateBERT=0.4657  BiLSTM=0.4685  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2262  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, I've added the template to the article, Daniel love, '
+  RoBERTa=0.0849  HateBERT=0.4105  BiLSTM=0.4691  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2179  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, I nearly get blocked, lol, I didn't broke any rule, I'
+  RoBERTa=0.2891  HateBERT=0.381  BiLSTM=0.4695  ToxicRoBERTa=0.5191
+  Active labels: ['toxic']
+  Ensemble=0.4172  Votes=1/4  -> non-offensive
+[TEXT] 'Quote, all of a sudden everyone is an expert on WP.  In Gaza'
+  RoBERTa=0.198  HateBERT=0.4019  BiLSTM=0.4684  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2438  Votes=0/4  -> non-offensive
+[TEXT] 'Regarding KOI 172.02, Hi Ma Net, the source is http://en.wik'
+  RoBERTa=0.0774  HateBERT=0.4125  BiLSTM=0.4681  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2163  Votes=0/4  -> non-offensive
+[TEXT] 'Oh, and another thing, this book discredits updates a lot of'
+  RoBERTa=0.0727  HateBERT=0.4306  BiLSTM=0.4682  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2196  Votes=0/4  -> non-offensive
+[TEXT] 'Ta, well I still think there might be some against this.  I '
+  RoBERTa=0.0786  HateBERT=0.4832  BiLSTM=0.4704  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.2347  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, Well, actually, no, I was thinking of a button that s'
+  RoBERTa=0.0573  HateBERT=0.4775  BiLSTM=0.4687  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2276  Votes=0/4  -> non-offensive
+[TEXT] 'All I have to say is that Clary is done.'
+  RoBERTa=0.099  HateBERT=0.3817  BiLSTM=0.4688  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.2141  Votes=0/4  -> non-offensive
+[TEXT] 'with inaccuracy because the earth is not exactly spherical  '
+  RoBERTa=0.1632  HateBERT=0.4011  BiLSTM=0.4678  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2349  Votes=0/4  -> non-offensive
+[TEXT] 'equals equals perceptions of cuteness equals equals I am  am'
+  RoBERTa=0.4398  HateBERT=0.4678  BiLSTM=0.4684  ToxicRoBERTa=0.0007
+  Active labels: []
+  Ensemble=0.3208  Votes=0/4  -> non-offensive
+[TEXT] 'It is possible I did some mistake.'
+  RoBERTa=0.2009  HateBERT=0.39  BiLSTM=0.4684  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2416  Votes=0/4  -> non-offensive
+[TEXT] 'Listen up, go fuck yourself, asswipe.'
+  RoBERTa=0.9238  HateBERT=0.3427  BiLSTM=0.4693  ToxicRoBERTa=0.9975
+  Active labels: ['toxic', 'obscene', 'insult']
+  Ensemble=0.7097  Votes=2/4  -> toxic
+[TEXT] '.38 caliber, please read Wikipedia, citing sources which ref'
+  RoBERTa=0.1648  HateBERT=0.4388  BiLSTM=0.467  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.2445  Votes=0/4  -> non-offensive
+[TEXT] 'Thanks. It's good to be back.  D. Sayaya'
+  RoBERTa=0.0343  HateBERT=0.3587  BiLSTM=0.4681  ToxicRoBERTa=0.0006
+  Active labels: []
+  Ensemble=0.1921  Votes=0/4  -> non-offensive
+[TEXT] 'Quote, I may be wrong, but shouldn't they have created one g'
+  RoBERTa=0.238  HateBERT=0.418  BiLSTM=0.4704  ToxicRoBERTa=0.0087
+  Active labels: []
+  Ensemble=0.2607  Votes=0/4  -> non-offensive
+[TEXT] 'Quote re your message. I'm really not sure how to do that. I'
+  RoBERTa=0.0746  HateBERT=0.4068  BiLSTM=0.4668  ToxicRoBERTa=0.0008
+  Active labels: []
+  Ensemble=0.214  Votes=0/4  -> non-offensive
+[TEXT] 'History of Washington D.C. Please restore my edits. If you b'
+  RoBERTa=0.0829  HateBERT=0.4486  BiLSTM=0.4687  ToxicRoBERTa=0.0013
+  Active labels: []
+  Ensemble=0.227  Votes=0/4  -> non-offensive
+[TEXT] 'WP-ANI-DO-admins-deserve-harassment.3f  This amused me, dash'
+  RoBERTa=0.1815  HateBERT=0.3994  BiLSTM=0.468  ToxicRoBERTa=0.143
+  Active labels: []
+  Ensemble=0.2817  Votes=0/4  -> non-offensive
+[TEXT] 'In what way wasn't it a success, I hate to ask.'
+  RoBERTa=0.1215  HateBERT=0.4185  BiLSTM=0.468  ToxicRoBERTa=0.0011
+  Active labels: []
+  Ensemble=0.2289  Votes=0/4  -> non-offensive
+  175/300
+[TEXT] 'That's just a website with no academic authority, just becau'
+  RoBERTa=0.3519  HateBERT=0.4531  BiLSTM=0.4674  ToxicRoBERTa=0.1784
+  Active labels: []
+  Ensemble=0.3483  Votes=0/4  -> non-offensive
+[TEXT] 'And your proposed classification for my alloproliferate of d'
+  RoBERTa=0.14  HateBERT=0.393  BiLSTM=0.4689  ToxicRoBERTa=0.001
+  Active labels: []
+  Ensemble=0.2273  Votes=0/4  -> non-offensive
