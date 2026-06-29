@@ -4,6 +4,7 @@ const Meeting = require("../models/Meeting");
 const User = require("../models/User");
 const Image = require("../models/Images");
 const { agentLog } = require("../debug_agent_log");
+const { updateAnalytics } = require("../utils/updateAnalytics");
 
 
 // ===== TEXT AI =====
@@ -469,6 +470,9 @@ socket.on(
         { roomId, isToxic, label: aiResult.label },
         "H4"
       );
+
+      // update meeting analytics after every chat message (total count + per-user if toxic)
+      updateAnalytics(roomId);
 
       if (isToxic) {
 

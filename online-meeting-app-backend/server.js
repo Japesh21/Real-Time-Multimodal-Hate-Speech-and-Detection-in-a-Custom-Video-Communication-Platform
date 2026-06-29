@@ -16,6 +16,7 @@ const AudioTranscript = require("./models/AudioTranscript");
 const VideoEvent = require("./models/VideoEvent");
 const Meeting = require("./models/Meeting");
 const { agentLog } = require("./debug_agent_log");
+const { updateAnalytics } = require("./utils/updateAnalytics");
 
 const meetingSocket = require("./sockets/meeting.socket");
 
@@ -93,59 +94,10 @@ app.use("/api/profile", profileRoutes);
 
 
 
-/* =====================================================
-   FUSION RISK CALCULATOR
-   Runs after every alert save. Counts per-modality alerts
-   for this meeting, computes risk level, updates Meeting doc.
-===================================================== */
-
-async function updateFusionRisk(meetingCode) {
-  try {
-    const [videoEvents, audioTranscripts] = await Promise.all([
-      VideoEvent.find({ meetingCode }),
-      AudioTranscript.find({ meetingCode, flagged: true }),
-    ]);
-
-    const textAlerts    = audioTranscripts.filter(t => t.aiLabel && t.aiLabel !== "non-toxic").length;
-    const audioAlerts   = audioTranscripts.filter(t => t.flagged).length - textAlerts;
-    const videoAlerts   = videoEvents.filter(e => !e.emotionHarmful).length;
-    const emotionAlerts = videoEvents.filter(e => e.emotionHarmful).length;
-    const total         = textAlerts + Math.max(audioAlerts, 0) + videoAlerts + emotionAlerts;
-
-    let riskLevel = "low";
-    if (total === 0)       riskLevel = "low";
-    else if (total <= 2)   riskLevel = "medium";
-    else if (total <= 5)   riskLevel = "high";
-    else                   riskLevel = "critical";
-
-    const parts = [];
-    if (textAlerts)    parts.push(`${textAlerts} text`);
-    if (audioAlerts > 0) parts.push(`${audioAlerts} audio`);
-    if (videoAlerts)   parts.push(`${videoAlerts} video`);
-    if (emotionAlerts) parts.push(`${emotionAlerts} emotion`);
-    const riskSummary = parts.join(" + ") || "no alerts";
-
-    await Meeting.findOneAndUpdate(
-      { code: meetingCode },
-      {
-        $set: {
-          "analytics.fusion.textAlerts":    textAlerts,
-          "analytics.fusion.audioAlerts":   Math.max(audioAlerts, 0),
-          "analytics.fusion.videoAlerts":   videoAlerts,
-          "analytics.fusion.emotionAlerts": emotionAlerts,
-          "analytics.fusion.totalAlerts":   total,
-          "analytics.fusion.riskLevel":     riskLevel,
-          "analytics.fusion.riskSummary":   riskSummary,
-          "analytics.fusion.lastUpdated":   new Date(),
-        },
-      }
-    );
-
-    console.log(`[FUSION] ${meetingCode} → ${riskLevel} (${riskSummary})`);
-  } catch (err) {
-    console.error("[FUSION ERROR]", err.message);
-  }
-}
+// updateAnalytics is imported from utils/updateAnalytics.js
+// Call it as: updateAnalytics(meetingCode)
+// Alias kept so existing call sites don't break
+const updateFusionRisk = updateAnalytics;
 
 
 /* =====================================================
