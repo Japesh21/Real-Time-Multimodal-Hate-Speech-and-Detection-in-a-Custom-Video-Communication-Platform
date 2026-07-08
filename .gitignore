@@ -53,3 +53,4 @@ online-meeting-app-backend/.env
 online-meeting-app-frontend/.env
 AI/.env
 .env
+CLAUDE.md
